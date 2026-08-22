@@ -729,6 +729,62 @@
       .topbar { align-items: flex-start; flex-direction: column; }
       .pill-row { justify-content: flex-start; }
     }
+    @media (max-width: 780px) {
+      .wrap { padding: 14px 10px 20px; }
+      .topbar { gap: 12px; }
+      .pill-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .pill {
+        width: 100%;
+        padding: 10px 8px;
+        white-space: normal;
+      }
+      .hero-listing {
+        grid-template-columns: 1fr !important;
+      }
+      .group-tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .group-tab { width: 100%; }
+      .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-2, .grid-3, .split, .detail-grid { grid-template-columns: 1fr; }
+      .panel .head,
+      .email-draft .meta,
+      .selected-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .email-draft .details { text-align: left; }
+      .big-title,
+      .selected-title { font-size: 24px; }
+      .list-item .top,
+      .listing-card .row1 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .listing-card .row1 .badge,
+      .list-item .top .badge { align-self: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .pill-row { grid-template-columns: 1fr; }
+      .group-tabs { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: 1fr; }
+      .hero-listing { padding: 12px; }
+      .panel .body { padding: 12px; }
+      .accordion > summary,
+      .accordion .content { padding-left: 12px; padding-right: 12px; }
+      .listing-card { padding: 12px; }
+      .detail-tile,
+      .feed-item,
+      .list-item {
+        padding: 12px;
+      }
+    }
   </style>
 </head>
 <body>
