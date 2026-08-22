@@ -1,0 +1,1821 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AgentLoop Wireframe</title>
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --panel: #ffffff;
+      --panel-2: #f8fafc;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --soft: #94a3b8;
+      --line: #d9e2ee;
+      --dash: #c4d0df;
+      --accent: #2457ff;
+      --accent2: #0f9d8a;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .06);
+      --radius: 20px;
+      --radius-sm: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(36,87,255,.08), transparent 24%),
+        radial-gradient(circle at 80% 0%, rgba(15,157,138,.08), transparent 20%),
+        linear-gradient(180deg, #f7f9fc 0%, var(--bg) 100%);
+    }
+    .wrap {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 20px 32px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(217,226,238,.9);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+    .brand .sub {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .pill-row {
+      display: inline-flex;
+      align-items: stretch;
+      gap: 0;
+      justify-content: flex-end;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      border-radius: 999px;
+      padding: 4px;
+      box-shadow: 0 8px 22px rgba(15,23,42,.06);
+      overflow: hidden;
+    }
+    .pill {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: transparent;
+      border: 0;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .01em;
+      cursor: pointer;
+      font: inherit;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .pill + .pill { margin-left: 2px; }
+    .pill.active {
+      background: #fff;
+      color: #0f172a;
+      box-shadow: 0 1px 2px rgba(15,23,42,.08);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .card {
+      background: rgba(255,255,255,.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+    .nav button,
+    .fake-btn {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: left;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .nav button.active {
+      background: rgba(36,87,255,.08);
+      border-color: rgba(36,87,255,.22);
+    }
+    .muted { color: var(--muted); }
+    .help {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .main {
+      display: grid;
+      gap: 18px;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #fafcff);
+    }
+    .toolbar h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.04em;
+    }
+    .toolbar .right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .small {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px dashed var(--dash);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 18px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .panel .head {
+      padding: 15px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #fbfdff);
+    }
+    .panel .head h3 {
+      margin: 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+    }
+    .panel .body { padding: 16px; }
+    .placeholder {
+      border: 1px dashed var(--dash);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    }
+    .hero-listing {
+      padding: 18px;
+      min-height: 240px;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 16px;
+    }
+    .agent-overview {
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 18px;
+    }
+    .listing-switcher {
+      display: grid;
+      gap: 12px;
+    }
+    .listing-weekly-draft {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f9fbff;
+      padding: 14px;
+      margin-top: -4px;
+      margin-bottom: 6px;
+    }
+    .listing-weekly-draft .draft-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .listing-weekly-draft .draft-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .01em;
+    }
+    .listing-weekly-draft .draft-week {
+      color: #1e3a8a;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .listing-weekly-draft .draft-stack {
+      display: grid;
+      gap: 10px;
+    }
+    .listing-weekly-draft .draft-stack .callout {
+      background: #fff;
+    }
+    .listing-weekly-draft .previous-activities {
+      margin-top: 10px;
+    }
+    .group-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .group-tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #334155;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .group-tab.active {
+      background: rgba(36,87,255,.08);
+      border-color: rgba(36,87,255,.22);
+      color: #1e3a8a;
+    }
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(36,87,255,.22);
+      background: rgba(36,87,255,.08);
+      color: #1e3a8a;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+    .doc-link:hover { background: rgba(36,87,255,.12); }
+    .item-actions {
+      display: flex;
+      justify-content: flex-start;
+    }
+    .accordion {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .accordion + .accordion { margin-top: 12px; }
+    .accordion > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+    }
+    .accordion > summary::-webkit-details-marker { display: none; }
+    .accordion .summary-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .accordion .summary-title {
+      font-size: 14px;
+    }
+    .accordion .summary-sub {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+    .accordion .content {
+      padding: 0 16px 16px;
+    }
+    .listing-card {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px;
+      cursor: pointer;
+      font: inherit;
+      color: var(--ink);
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 1px 0 rgba(15,23,42,.02);
+    }
+    .listing-card.active {
+      background: rgba(36,87,255,.06);
+      border-color: rgba(36,87,255,.22);
+      box-shadow: inset 0 0 0 1px rgba(36,87,255,.06);
+    }
+    .listing-card .row1 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .listing-card .addr {
+      font-size: 14px;
+      font-weight: 850;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+    .listing-card .meta {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+    .selected-shell {
+      display: grid;
+      gap: 18px;
+    }
+    .selected-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .selected-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .selected-title {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.05;
+      letter-spacing: -0.06em;
+    }
+    .big-title {
+      font-size: 30px;
+      line-height: 1.05;
+      letter-spacing: -0.06em;
+      margin: 0 0 10px;
+    }
+    .subcopy {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .info-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #475569;
+      display: inline-grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      cursor: help;
+      box-shadow: 0 1px 2px rgba(15,23,42,.04);
+      flex: none;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .metric {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 82px;
+    }
+    .metric .label {
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .metric .value {
+      font-size: 18px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+    .metric .note {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+    .list-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #fff;
+      display: grid;
+      gap: 6px;
+    }
+    .list-item .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .list-item .top strong { font-size: 14px; }
+    .badge {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(36,87,255,.08);
+      color: #1e3a8a;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .badge.gray { background: #eef2f7; color: #334155; }
+    .badge.green { background: rgba(15,157,138,.1); color: #0f766e; }
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #e8eef7;
+      overflow: hidden;
+    }
+    .bar > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .feed {
+      display: grid;
+      gap: 12px;
+    }
+    .feed-item {
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .feed-item .time {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .feed-item p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #334155;
+      font-weight: 600;
+    }
+    .clickable-list-item {
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .clickable-list-item:hover,
+    .clickable-list-item.active {
+      border-color: rgba(36,87,255,.28);
+      box-shadow: 0 8px 24px rgba(36,87,255,.08);
+      transform: translateY(-1px);
+    }
+    .detail-stack {
+      display: grid;
+      gap: 12px;
+    }
+    .detail-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .detail-tile {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 12px 14px;
+    }
+    .detail-tile .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .detail-tile .value {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+    .detail-tile .note {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .composer {
+      display: grid;
+      gap: 14px;
+    }
+    .textarea {
+      min-height: 220px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px dashed var(--dash);
+      background: linear-gradient(180deg, #fff, #f8fafc);
+      color: #334155;
+      line-height: 1.6;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .callout {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .callout .k {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .callout .v {
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 650;
+      color: #334155;
+    }
+    .recent-activity {
+      display: grid;
+      gap: 10px;
+    }
+    .recent-activity .activity {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .recent-activity .activity .t {
+      color: #0f172a;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .recent-activity .activity .d {
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+    .email-draft {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+      overflow: hidden;
+    }
+    .email-draft .meta {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(248,250,252,.8);
+    }
+    .email-draft .meta-left {
+      display: grid;
+      gap: 4px;
+    }
+    .email-draft .eyebrow-mini {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 800;
+    }
+    .email-draft .subject {
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .email-draft .details {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      text-align: right;
+      line-height: 1.45;
+    }
+    .email-draft .body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #334155;
+    }
+    .email-draft .body p {
+      margin: 0;
+    }
+    .email-draft .body ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+    .email-draft .body li {
+      margin: 0;
+    }
+    .email-draft .signature {
+      margin-top: 4px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .hidden { display: none !important; }
+    .space {
+      display: grid;
+      gap: 18px;
+    }
+    .footer-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 4px 2px 0;
+    }
+    @media (max-width: 1100px) {
+      .layout, .grid-2, .grid-3, .hero-listing, .split, .metric-row, .agent-overview { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .pill-row { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 74 74">
+            <defs>
+              <linearGradient id="wireGrad" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#2457ff" />
+                <stop offset="100%" stop-color="#0f9d8a" />
+              </linearGradient>
+            </defs>
+            <circle cx="37" cy="37" r="23" fill="none" stroke="url(#wireGrad)" stroke-width="7.5" stroke-linecap="round" stroke-dasharray="120 20" />
+            <path d="M46 26 L58 14" fill="none" stroke="#2457ff" stroke-width="6" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <h1>AgentLoop wireframe</h1>
+        </div>
+      </div>
+      <div class="pill-row" aria-label="Primary navigation">
+        <button class="pill active" data-view="agent">Agent dashboard</button>
+        <button class="pill" data-view="client">Client portal</button>
+        <button class="pill" data-view="settings">Setting</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <main class="main">
+        <section id="agent-view" class="space">
+          <div class="toolbar" id="screen-toolbar">
+            <h2 id="screen-title">Agent dashboard</h2>
+          </div>
+          <div class="agent-overview">
+              <div class="panel">
+                <div class="head">
+                  <h3>Seller listings</h3>
+                </div>
+                <div class="body">
+                  <div id="seller-group">
+                    <details class="accordion" open>
+                      <summary>
+                        <div class="summary-left">
+                          <div class="summary-title">Active listings</div>
+                          <div class="summary-sub">These show up by default so the agent can quickly switch between currently live seller files.</div>
+                        </div>
+                        <span class="badge green">3</span>
+                      </summary>
+                      <div class="content">
+                        <div class="listing-switcher" id="listing-switcher">
+                          <button class="listing-card active" data-listing="willow" data-status="active">
+                            <div class="row1">
+                              <div>
+                                <div class="addr">124 Willow Street</div>
+                                <div class="meta">Active · 21 days on market · Saturday 11am–1pm</div>
+                              </div>
+                              <span class="badge green">Selected</span>
+                            </div>
+                          </button>
+                          <button class="listing-card" data-listing="maple" data-status="active">
+                            <div class="row1">
+                              <div>
+                                <div class="addr">48 Maple Avenue</div>
+                                <div class="meta">Active · 12 days on market · Saturday 1pm–3pm</div>
+                              </div>
+                              <span class="badge gray">Queued</span>
+                            </div>
+                          </button>
+                          <button class="listing-card" data-listing="cedar" data-status="active">
+                            <div class="row1">
+                              <div>
+                                <div class="addr">902 Cedar Lane</div>
+                                <div class="meta">Active · 29 days on market · Saturday 10am–12pm</div>
+                              </div>
+                              <span class="badge gray">Queued</span>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </details>
+
+                    <details class="accordion">
+                      <summary>
+                        <div class="summary-left">
+                          <div class="summary-title">Pending listings</div>
+                          <div class="summary-sub">Collapsed by default. The agent can open this when a seller wants a status check on deals in progress.</div>
+                        </div>
+                        <span class="badge gray">1</span>
+                      </summary>
+                      <div class="content">
+                        <button class="listing-card" data-listing="brook" data-status="pending">
+                          <div class="row1">
+                            <div>
+                              <div class="addr">77 Brook Road</div>
+                              <div class="meta">Pending · 18 days on market · Inspection scheduled</div>
+                            </div>
+                            <span class="badge gray">Pending</span>
+                          </div>
+                        </button>
+                      </div>
+                    </details>
+
+                    <details class="accordion">
+                      <summary>
+                        <div class="summary-left">
+                          <div class="summary-title">Closed listings</div>
+                          <div class="summary-sub">Collapsed by default. This keeps the dashboard focused on the listings still needing attention.</div>
+                        </div>
+                        <span class="badge gray">2</span>
+                      </summary>
+                      <div class="content">
+                        <button class="listing-card" data-listing="pine" data-status="closed">
+                          <div class="row1">
+                            <div>
+                              <div class="addr">11 Pine Court</div>
+                              <div class="meta">Closed · 31 days on market · Sold above asking</div>
+                            </div>
+                            <span class="badge gray">Closed</span>
+                          </div>
+                        </button>
+                      </div>
+                    </details>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="head">
+                  <h3>Selected listing</h3>
+                  <span class="badge green" id="selected-status">Active</span>
+                </div>
+                <div class="body selected-shell">
+                  <div>
+                    <div class="selected-top">
+                      <div>
+                        <div class="eyebrow">Current file</div>
+                        <div class="selected-title-row">
+                          <h3 class="selected-title" id="selected-title">124 Willow Street</h3>
+                          <button class="info-icon" type="button" title="This panel is the detailed listing view. It shows the live numbers, activity, and the weekly update draft for the selected file.">i</button>
+                        </div>
+                      </div>
+                      <div class="group-tabs" aria-label="Dashboard timeframe">
+                        <button class="group-tab active" data-dashboard-filter="thisWeek">This week</button>
+                        <button class="group-tab" data-dashboard-filter="all">All</button>
+                      </div>
+                    </div>
+
+                    <div class="metric-row">
+                      <div class="metric">
+                        <div class="label">Showings</div>
+                        <div class="value" id="selected-showings">18</div>
+                        <div class="note" id="selected-showings-note">Up 4 this week</div>
+                      </div>
+                      <div class="metric">
+                        <div class="label">Interested buyers</div>
+                        <div class="value" id="selected-interest">9</div>
+                        <div class="note" id="selected-interest-note">Saved / requested info</div>
+                      </div>
+                      <div class="metric">
+                        <div class="label">Offers / proposals</div>
+                        <div class="value" id="selected-offers">2</div>
+                        <div class="note" id="selected-offers-note">1 verbal, 1 written</div>
+                      </div>
+                      <div class="metric">
+                        <div class="label">List price</div>
+                        <div class="value" id="selected-price">$615K</div>
+                        <div class="note" id="selected-price-note">No change this week</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel" style="border-radius:18px; box-shadow:none;">
+                    <div class="body">
+                      <div class="recent-activity" id="selected-activity"></div>
+                    </div>
+                  </div>
+
+                  <div class="panel" style="border-radius:18px; box-shadow:none;">
+                    <div class="head">
+                      <h3>Weekly update draft</h3>
+                      <span class="badge green draft-week-label">This week · Aug 17–23, 2026</span>
+                    </div>
+                    <div class="body">
+                      <div class="email-draft">
+                        <div class="meta">
+                          <div class="meta-left">
+                            <div class="eyebrow-mini">Email draft</div>
+                            <div class="subject draft-subject">Weekly update — 124 Willow Street</div>
+                          </div>
+                          <div class="details">
+                            To: Seller client<br />
+                            From: AgentLoop draft
+                          </div>
+                        </div>
+                        <div class="body">
+                          <p>Hi,</p>
+                          <div>
+                            <div class="eyebrow-mini">Summary of this week</div>
+                            <ul>
+                              <li class="draft-summary">Interest remains healthy, but buyers are still comparing this home against newer inventory.</li>
+                              <li>Showings are moving in the right direction.</li>
+                              <li>Buyer feedback is still mixed on pricing versus newer inventory.</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <div class="eyebrow-mini">Recommendation</div>
+                            <ul>
+                              <li class="draft-recommendation">Hold price for now and keep promotion active for one more week.</li>
+                              <li>Monitor nearby reductions and keep tracking showing feedback.</li>
+                              <li>Revisit pricing if interest slows next week.</li>
+                              <li>Promotion should stay active through the next weekend.</li>
+                            </ul>
+                          </div>
+                          <p>Best,<br /><span class="signature">Your Agent</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <section id="client-view" class="space hidden">
+            <div class="hero-listing" style="grid-template-columns: 1.05fr .95fr;">
+              <div class="panel" style="border-radius:18px; box-shadow:none;">
+                <div class="head">
+                  <div>
+                    <div class="eyebrow">Seller portal</div>
+                    <h3 class="big-title" id="client-portal-title">What’s happening with my house?</h3>
+                  </div>
+                  <div class="group-tabs" aria-label="Client portal timeframe">
+                    <button class="group-tab active" data-client-filter="thisWeek">This week</button>
+                    <button class="group-tab" data-client-filter="all">All</button>
+                  </div>
+                </div>
+
+                <div class="metric-row" style="margin-top: 14px;">
+                  <div class="metric">
+                    <div class="label">Current status</div>
+                    <div class="value" id="client-status">Active</div>
+                    <div class="note" id="client-status-note">On market 21 days</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Showings</div>
+                    <div class="value" id="client-showings">6</div>
+                    <div class="note" id="client-showings-note">3 private, 3 open house</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Interested buyers</div>
+                    <div class="value" id="client-interest">9</div>
+                    <div class="note" id="client-interest-note">Saved / requested info</div>
+                  </div>
+                  <div class="metric">
+                    <div class="label">Offers / contracts</div>
+                    <div class="value" id="client-offers">2</div>
+                    <div class="note" id="client-offers-note">1 verbal, 1 written</div>
+                  </div>
+                </div>
+
+                <div class="detail-stack" style="margin-top: 18px;">
+                  <div class="list" id="client-interest-list" aria-label="Interest and contract list">
+                    <div class="list-item clickable-list-item active" data-client-item="offer">
+                      <div class="top">
+                        <strong>Written offer received</strong>
+                        <span class="badge green">most important</span>
+                      </div>
+                      <div class="help">1 written offer at $612K with financing and inspection contingencies.</div>
+                      <div class="item-actions">
+                        <a class="doc-link" id="client-offer-link" href="#offer-packet">View actual offer</a>
+                      </div>
+                    </div>
+                    <div class="list-item clickable-list-item" data-client-item="showing">
+                      <div class="top">
+                        <strong>Strong showing feedback</strong>
+                        <span class="badge gray">showing</span>
+                      </div>
+                      <div class="help">Buyers liked the layout and natural light, and said the kitchen feels dated and may need cosmetic updates before they feel ready to make a stronger offer.</div>
+                    </div>
+                    <div class="list-item clickable-list-item" data-client-item="inquiry">
+                      <div class="top">
+                        <strong>Buyer interest inquiry</strong>
+                        <span class="badge gray">interest</span>
+                      </div>
+                      <div class="help">Several buyers requested more details and saved the listing for later review.</div>
+                    </div>
+                    <div class="list-item clickable-list-item" data-client-item="market">
+                      <div class="top">
+                        <strong>Market comparison</strong>
+                        <span class="badge gray">context</span>
+                      </div>
+                      <div class="help">Nearby homes were reduced this week, so pricing strategy matters right now.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel" style="border-radius:18px; box-shadow:none;">
+                <div class="head">
+                  <h3 id="client-detail-title">Written offer received</h3>
+                  <span class="badge green" id="client-detail-badge">contract</span>
+                </div>
+                <div class="body">
+                  <a class="doc-link" id="client-detail-doc-link" href="#offer-packet">Open actual offer document</a>
+                  <div class="detail-stack">
+                    <div class="detail-grid">
+                      <div class="detail-tile">
+                        <div class="label">Stage</div>
+                        <div class="value" id="client-detail-stage">Written offer</div>
+                        <div class="note" id="client-detail-stage-note">Ready for review</div>
+                      </div>
+                      <div class="detail-tile">
+                        <div class="label">When</div>
+                        <div class="value" id="client-detail-time">Tuesday</div>
+                        <div class="note" id="client-detail-time-note">Presented this week</div>
+                      </div>
+                      <div class="detail-tile">
+                        <div class="label">How serious</div>
+                        <div class="value" id="client-detail-seriousness">High</div>
+                        <div class="note" id="client-detail-seriousness-note">Formal paperwork submitted</div>
+                      </div>
+                      <div class="detail-tile">
+                        <div class="label">Seller takeaway</div>
+                        <div class="value" id="client-detail-takeaway">Review now</div>
+                        <div class="note" id="client-detail-takeaway-note">Best item to open first</div>
+                      </div>
+                    </div>
+
+                    <div class="feed">
+                      <div class="feed-item">
+                        <div class="time">What this means</div>
+                        <p id="client-detail-meaning">This is the most important type of item for a seller because it moves from interest into a concrete buying proposal.</p>
+                      </div>
+                      <div class="feed-item">
+                        <div class="time">Agent note</div>
+                        <p id="client-detail-note">The seller should compare price, contingencies, and closing timeline before deciding whether to accept or counter.</p>
+                      </div>
+                      <div class="feed-item">
+                        <div class="time">Recommended next step</div>
+                        <p id="client-detail-next-step">Open the offer details, review terms, and decide whether to accept, counter, or hold for more interest.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-3">
+              <div class="panel">
+                <div class="head"><h3>What sellers care about most</h3></div>
+                <div class="body">
+                  <div class="list">
+                    <div class="list-item"><div class="top"><strong>1. Offers / contracts</strong><span class="badge green">highest priority</span></div><div class="help">This is the most actionable item because it directly changes pricing and negotiation decisions.</div></div>
+                    <div class="list-item"><div class="top"><strong>2. Serious buyer interest</strong><span class="badge gray">important</span></div><div class="help">Saved buyers, repeated inquiries, and strong follow-up questions signal real momentum.</div></div>
+                    <div class="list-item"><div class="top"><strong>3. Showing feedback</strong><span class="badge gray">helpful</span></div><div class="help">This explains what buyers like, what they question, and whether the listing needs changes.</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="head"><h3>Weekly summary</h3></div>
+                <div class="body">
+                  <div class="feed">
+                    <div class="feed-item">
+                      <div class="time">This week</div>
+                      <p id="client-week-summary">Traffic stayed steady, feedback remained mixed on the kitchen, and one written offer came in for review.</p>
+                    </div>
+                    <div class="feed-item">
+                      <div class="time">Agent recommendation</div>
+                      <p id="client-week-recommendation">Hold price for now and review the offer details before deciding whether to counter.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="head"><h3>All-history view</h3></div>
+                <div class="body">
+                  <div class="help">Switch to All to see the full history of showings, interest, offers, and market context from launch.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="settings-view" class="space hidden">
+            <div class="grid-2">
+              <div class="panel">
+                <div class="head"><h3>Listing settings</h3><span class="badge gray">manual setup</span></div>
+                <div class="body">
+                  <div class="list">
+                    <div class="list-item"><div class="top"><strong>Property details</strong><span class="badge gray">editable</span></div><div class="help">Address, list price, beds/baths, photos, open house schedule.</div></div>
+                    <div class="list-item"><div class="top"><strong>Client access</strong><span class="badge gray">invite</span></div><div class="help">Seller sees their dashboard and weekly summary history.</div></div>
+                    <div class="list-item"><div class="top"><strong>Data sources</strong><span class="badge gray">MLS + manual</span></div><div class="help">Listings sync from MLS; notes and feedback can be entered by the agent.</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="head"><h3>Build notes</h3></div>
+                <div class="body">
+                  <div class="help">
+                    This wireframe keeps the MVP small enough to build while still proving the full communication loop.
+                    It should be a strong starting point for product design, user interviews, and a clickable prototype.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="panel"><div class="head"><h3>Future buyer flow</h3></div><div class="body"><div class="help">Can reuse the same shell with a buyer-centric dashboard later.</div></div></div>
+              <div class="panel"><div class="head"><h3>Future team flow</h3></div><div class="body"><div class="help">Could support multiple agents and assistants inside one account later.</div></div></div>
+              <div class="panel"><div class="head"><h3>Future analytics</h3></div><div class="body"><div class="help">Could add conversion, pricing trends, and listing performance views later.</div></div></div>
+            </div>
+          </section>
+        </div>
+        <div class="footer-note">
+          Wireframe note: this is intentionally low-fidelity. It defines the information architecture and key actions first, while the brand sheet handles the visual identity.
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll('.pill-row [data-view]'));
+    const listingButtons = Array.from(document.querySelectorAll('.listing-card'));
+    const views = {
+      agent: document.getElementById('agent-view'),
+      client: document.getElementById('client-view'),
+      summary: document.getElementById('summary-view'),
+      settings: document.getElementById('settings-view'),
+    };
+    const title = document.getElementById('screen-title');
+    const clientFilterButtons = Array.from(document.querySelectorAll('#client-view [data-client-filter]'));
+    const clientInterestList = document.getElementById('client-interest-list');
+    const clientPortalTitle = document.getElementById('client-portal-title');
+    const clientStatus = document.getElementById('client-status');
+    const clientStatusNote = document.getElementById('client-status-note');
+    const clientShowings = document.getElementById('client-showings');
+    const clientShowingsNote = document.getElementById('client-showings-note');
+    const clientInterest = document.getElementById('client-interest');
+    const clientInterestNote = document.getElementById('client-interest-note');
+    const clientOffers = document.getElementById('client-offers');
+    const clientOffersNote = document.getElementById('client-offers-note');
+    const clientDetailTitle = document.getElementById('client-detail-title');
+    const clientDetailBadge = document.getElementById('client-detail-badge');
+    const clientDetailStage = document.getElementById('client-detail-stage');
+    const clientDetailStageNote = document.getElementById('client-detail-stage-note');
+    const clientDetailTime = document.getElementById('client-detail-time');
+    const clientDetailTimeNote = document.getElementById('client-detail-time-note');
+    const clientDetailSeriousness = document.getElementById('client-detail-seriousness');
+    const clientDetailSeriousnessNote = document.getElementById('client-detail-seriousness-note');
+    const clientDetailTakeaway = document.getElementById('client-detail-takeaway');
+    const clientDetailTakeawayNote = document.getElementById('client-detail-takeaway-note');
+    const clientDetailMeaning = document.getElementById('client-detail-meaning');
+    const clientDetailNote = document.getElementById('client-detail-note');
+    const clientDetailNextStep = document.getElementById('client-detail-next-step');
+    const clientWeekSummary = document.getElementById('client-week-summary');
+    const clientWeekRecommendation = document.getElementById('client-week-recommendation');
+    const clientOfferLink = document.getElementById('client-offer-link');
+    const clientDetailDocLink = document.getElementById('client-detail-doc-link');
+    const clientOfferPacketHref = '#offer-packet';
+    const titles = {
+      agent: 'Agent dashboard',
+      client: 'Client portal',
+      settings: 'Setting',
+    };
+
+    const listings = {
+      willow: {
+        title: '124 Willow Street',
+        status: 'Active',
+        summary: 'Snapshot of what is happening with this house, what has changed this week, and what the agent should pay attention to next.',
+        showings: '18',
+        showingsNote: 'Up 4 this week',
+        showingsWeek: '18',
+        showingsWeekNote: 'Up 4 this week',
+        showingsAll: '41',
+        showingsAllNote: 'Since launch',
+        interest: '9',
+        interestNote: 'Saved / requested info',
+        interestWeek: '9',
+        interestWeekNote: 'Saved / requested info',
+        interestAll: '21',
+        interestAllNote: 'Since launch',
+        offers: '2',
+        offersNote: '1 verbal, 1 written',
+        price: '$615K',
+        priceNote: 'No change this week',
+        draftWeek: 'This week · Aug 17–23, 2026',
+        draftSummary: 'Buyer interest stayed healthy, but buyers are still comparing this home against newer inventory.',
+        draftRecommendation: 'Hold price for now and keep promotion active for one more week.',
+        thisWeekLabel: 'This week · Aug 17–23, 2026',
+        thisWeekActivity: [
+          'Price drop discussion — Two similar homes nearby reduced price by 2–3%.',
+          'Showing feedback — Comments mention good light, but dated kitchen is a concern.',
+          'Market comparison — One competitor reduced, one stayed flat, one went pending.'
+        ],
+        previousActivities: [
+          {
+            label: 'Previous activities — Aug 10–16, 2026',
+            items: [
+              'Showings picked up after the weekend open house.',
+              'Two buyers asked for more detail on the kitchen and roof.',
+              'A competitor reduced price and triggered a market reset.'
+            ]
+          },
+          {
+            label: 'Previous activities — Aug 3–9, 2026',
+            items: [
+              'Initial launch and photo refresh were completed.',
+              'First round of buyer feedback came in positive on layout and light.',
+              'Agent recommended staying patient while traffic built.'
+            ]
+          }
+        ],
+        activity: [
+          ['Price drop discussion', 'Two similar homes nearby reduced price by 2–3%.'],
+          ['Showing feedback', 'Comments mention good light, but dated kitchen is a concern.'],
+          ['Market comparison', 'One competitor reduced, one stayed flat, one went pending.'],
+        ],
+      },
+      maple: {
+        title: '48 Maple Avenue',
+        status: 'Active',
+        summary: 'A newer listing that is getting early attention and needs more exposure before a pricing decision.',
+        showings: '7',
+        showingsNote: 'Up 2 this week',
+        showingsWeek: '7',
+        showingsWeekNote: 'Up 2 this week',
+        showingsAll: '19',
+        showingsAllNote: 'Since launch',
+        interest: '4',
+        interestNote: 'Mostly online views',
+        interestWeek: '4',
+        interestWeekNote: 'Mostly online views',
+        interestAll: '11',
+        interestAllNote: 'Since launch',
+        offers: '0',
+        offersNote: 'No formal proposals yet',
+        price: '$480K',
+        priceNote: 'Fresh photos added',
+        draftWeek: 'This week · Aug 17–23, 2026',
+        draftSummary: 'Early interest is building, but the listing still needs more exposure before making a pricing move.',
+        draftRecommendation: 'Keep promoting and let the updated photos do more work.',
+        thisWeekLabel: 'This week · Aug 17–23, 2026',
+        thisWeekActivity: [
+          'Photography refresh — New photos went live after the kitchen staging update.',
+          'Showing trend — Weekend traffic improved after the price adjustment.',
+          'Agent note — Keep promoting before considering another change.'
+        ],
+        previousActivities: [
+          {
+            label: 'Previous activities — Aug 10–16, 2026',
+            items: [
+              'Fresh photos went live after the staging update.',
+              'A few new buyers viewed the listing online but did not schedule yet.',
+              'Agent advised holding price while traffic improved.'
+            ]
+          },
+          {
+            label: 'Previous activities — Aug 3–9, 2026',
+            items: [
+              'Listing launched with a clean, minimal photo set.',
+              'First open house drew curiosity but not strong follow-up.',
+              'Promotion plan was set up to improve visibility.'
+            ]
+          }
+        ],
+        activity: [
+          ['Photography refresh', 'New photos went live after the kitchen staging update.'],
+          ['Showing trend', 'Weekend traffic improved after the price adjustment.'],
+          ['Agent note', 'Keep promoting before considering another change.'],
+        ],
+      },
+      cedar: {
+        title: '902 Cedar Lane',
+        status: 'Active',
+        summary: 'A higher-price listing with one proposal in play and more serious buyer activity than the other homes.',
+        showings: '11',
+        showingsNote: 'Up 3 this week',
+        showingsWeek: '11',
+        showingsWeekNote: 'Up 3 this week',
+        showingsAll: '28',
+        showingsAllNote: 'Since launch',
+        interest: '6',
+        interestNote: 'Two repeat visitors',
+        interestWeek: '6',
+        interestWeekNote: 'Two repeat visitors',
+        interestAll: '14',
+        interestAllNote: 'Since launch',
+        offers: '1',
+        offersNote: 'Initial offer under review',
+        price: '$725K',
+        priceNote: 'Offer received',
+        draftWeek: 'This week · Aug 17–23, 2026',
+        draftSummary: 'There is real buyer activity here, but the current offer is still under review.',
+        draftRecommendation: 'Review the offer terms, watch whether comparable homes hold steady, and decide whether to negotiate or counter.',
+        thisWeekLabel: 'This week · Aug 17–23, 2026',
+        thisWeekActivity: [
+          'Offer review — One written offer came in below asking and is under discussion.',
+          'Buyer questions — Several buyers asked about repairs and seller flexibility.',
+          'Market comparison — Comparable homes are holding, but days on market are increasing.'
+        ],
+        previousActivities: [
+          {
+            label: 'Previous activities — Aug 10–16, 2026',
+            items: [
+              'Multiple repeat buyers returned for second looks.',
+              'One written offer came in and is being evaluated.',
+              'Comparable homes are holding, but days on market are increasing.'
+            ]
+          },
+          {
+            label: 'Previous activities — Aug 3–9, 2026',
+            items: [
+              'Listing gained steady traction after the first open house.',
+              'Buyers raised repair and flexibility questions.',
+              'Pricing discussion stayed on hold while the market response matured.'
+            ]
+          }
+        ],
+        activity: [
+          ['Offer review', 'One written offer came in below asking and is under discussion.'],
+          ['Buyer questions', 'Several buyers asked about repairs and seller flexibility.'],
+          ['Market comparison', 'Comparable homes are holding, but days on market are increasing.'],
+        ],
+      },
+      brook: {
+        title: '77 Brook Road',
+        status: 'Pending',
+        summary: 'A deal in progress with inspection and final contract steps still moving forward.',
+        showings: '14',
+        showingsNote: 'Before acceptance',
+        showingsWeek: '14',
+        showingsWeekNote: 'Before acceptance',
+        showingsAll: '27',
+        showingsAllNote: 'Since launch',
+        interest: '5',
+        interestNote: 'Strong buyer follow-through',
+        interestWeek: '5',
+        interestWeekNote: 'Strong buyer follow-through',
+        interestAll: '8',
+        interestAllNote: 'Since launch',
+        offers: '1',
+        offersNote: 'Offer accepted last Friday',
+        price: '$540K',
+        priceNote: 'Pending inspection',
+        draftWeek: 'This week · Aug 17–23, 2026',
+        draftSummary: 'The deal is moving through inspection and closing prep.',
+        draftRecommendation: 'Confirm inspection timing, keep the buyer and lender moving, and watch for any issues that could delay closing.',
+        thisWeekLabel: 'This week · Aug 17–23, 2026',
+        thisWeekActivity: [
+          'Offer accepted — Seller accepted a buyer proposal last Friday.',
+          'Inspection scheduled — Inspection is on the calendar for tomorrow afternoon.',
+          'Closing prep — Attorney and lender documents are being collected.'
+        ],
+        previousActivities: [
+          {
+            label: 'Previous activities — Aug 10–16, 2026',
+            items: [
+              'Offer was accepted and the file moved into pending status.',
+              'Inspection was scheduled and key documents were requested.',
+              'Attorney and lender coordination started.'
+            ]
+          },
+          {
+            label: 'Previous activities — Aug 3–9, 2026',
+            items: [
+              'Buyer interest stayed active through the final negotiation stage.',
+              'Seller received updates on offer terms and contingencies.',
+              'Closing prep began once the contract was signed.'
+            ]
+          }
+        ],
+        activity: [
+          ['Offer accepted', 'Seller accepted a buyer proposal last Friday.'],
+          ['Inspection scheduled', 'Inspection is on the calendar for tomorrow afternoon.'],
+          ['Closing prep', 'Attorney and lender documents are being collected.'],
+        ],
+      },
+      pine: {
+        title: '11 Pine Court',
+        status: 'Closed',
+        summary: 'This listing is complete and can be reviewed for lessons learned or sold-price context.',
+        showings: '22',
+        showingsNote: 'Final total before close',
+        showingsWeek: '22',
+        showingsWeekNote: 'Final total before close',
+        showingsAll: '36',
+        showingsAllNote: 'Since launch',
+        interest: '10',
+        interestNote: 'Strong market response',
+        interestWeek: '10',
+        interestWeekNote: 'Strong market response',
+        interestAll: '16',
+        interestAllNote: 'Since launch',
+        offers: '3',
+        offersNote: 'Closed above asking',
+        price: '$588K',
+        priceNote: 'Sold above asking',
+        draftWeek: 'This week · Aug 17–23, 2026',
+        draftSummary: 'This listing is closed, so the weekly update should stay short and focus on outcomes and lessons learned.',
+        draftRecommendation: 'Archive the result, pull the best lesson into future comps, and keep it as a reference for similar homes.',
+        thisWeekLabel: 'This week · Aug 17–23, 2026',
+        thisWeekActivity: [
+          'Closed sale — Property closed last month at a price above asking.',
+          'Market lesson — Fresh staging and timing helped create competition.',
+          'Archive note — Useful as a comparable for future pricing discussions.'
+        ],
+        previousActivities: [
+          {
+            label: 'Previous activities — Aug 10–16, 2026',
+            items: [
+              'Final buyer negotiations wrapped up successfully.',
+              'Sale closed above asking after strong market response.',
+              'Agent captured timing and staging notes for future use.'
+            ]
+          },
+          {
+            label: 'Previous activities — Aug 3–9, 2026',
+            items: [
+              'Market response stayed strong throughout the listing period.',
+              'Seller received regular updates on showings and offers.',
+              'Comparable-home review supported the final pricing strategy.'
+            ]
+          }
+        ],
+        activity: [
+          ['Closed sale', 'Property closed last month at a price above asking.'],
+          ['Market lesson', 'Fresh staging and timing helped create competition.'],
+          ['Archive note', 'Useful as a comparable for future pricing discussions.'],
+        ],
+      },
+    };
+
+    const selectedTitle = document.getElementById('selected-title');
+    const selectedStatus = document.getElementById('selected-status');
+    const selectedShowings = document.getElementById('selected-showings');
+    const selectedShowingsNote = document.getElementById('selected-showings-note');
+    const selectedInterest = document.getElementById('selected-interest');
+    const selectedInterestNote = document.getElementById('selected-interest-note');
+    const selectedOffers = document.getElementById('selected-offers');
+    const selectedOffersNote = document.getElementById('selected-offers-note');
+    const selectedPrice = document.getElementById('selected-price');
+    const selectedPriceNote = document.getElementById('selected-price-note');
+    const selectedActivity = document.getElementById('selected-activity');
+    const draftWeekLabel = document.querySelector('.draft-week-label');
+    const draftSubject = document.querySelector('.draft-subject');
+    const draftSummary = document.querySelector('.draft-summary');
+    const draftRecommendation = document.querySelector('.draft-recommendation');
+    const dashboardFilterButtons = Array.from(document.querySelectorAll('[data-dashboard-filter]'));
+    let dashboardFilter = 'thisWeek';
+    let clientFilter = 'thisWeek';
+    let currentClientItem = 'offer';
+
+    const clientPortalStates = {
+      thisWeek: {
+        summary: (title) => `A concentrated place for ${title} where the seller can see current status, showings, interest, offers, and the agent’s weekly explanation.`,
+        metrics: (data) => ({
+          status: data.status,
+          statusNote: data.status === 'Active' ? 'On market 21 days' : data.status === 'Pending' ? 'Inspection / closing prep' : 'Sold and archived',
+          showings: data.showingsWeek || data.showings,
+          showingsNote: data.showingsWeekNote || data.showingsNote,
+          interest: data.interestWeek || data.interest,
+          interestNote: data.interestWeekNote || data.interestNote,
+          offers: data.offers,
+          offersNote: data.offersNote,
+        }),
+        items: {
+          offer: {
+            title: 'Written offer received',
+            badge: 'most important',
+            desc: '1 written offer at $612K with financing and inspection contingencies.',
+            detailTitle: 'Written offer received',
+            detailBadge: 'contract',
+            stage: 'Written offer',
+            stageNote: 'Ready for review',
+            time: 'Tuesday',
+            timeNote: 'Presented this week',
+            seriousness: 'High',
+            seriousnessNote: 'Formal paperwork submitted',
+            takeaway: 'Review now',
+            takeawayNote: 'Best item to open first',
+            meaning: 'This is the most important type of item for a seller because it moves from interest into a concrete buying proposal.',
+            note: 'The seller should compare price, contingencies, and closing timeline before deciding whether to accept or counter.',
+            nextStep: 'Open the offer details, review terms, and decide whether to accept, counter, or hold for more interest.'
+          },
+          showing: {
+            title: 'Strong showing feedback',
+            badge: 'showing',
+            desc: 'Buyers liked the layout and light, but asked questions about the kitchen.',
+            detailTitle: 'Strong showing feedback',
+            detailBadge: 'showing',
+            stage: 'Showing feedback',
+            stageNote: 'Informal but useful',
+            time: 'Wednesday',
+            timeNote: 'After the weekend tour',
+            seriousness: 'Medium',
+            seriousnessNote: 'Good signal, not a proposal yet',
+            takeaway: 'Consider updates',
+            takeawayNote: 'Feedback may affect next steps',
+            meaning: 'Showing feedback helps the seller understand how buyers are reacting before they make an offer.',
+            note: 'The main concern is whether repeated questions about the kitchen are enough to affect price or promotion.',
+            nextStep: 'Use this feedback to decide whether to keep waiting, refresh marketing, or improve the presentation.'
+          },
+          inquiry: {
+            title: 'Buyer interest inquiry',
+            badge: 'interest',
+            desc: 'Several buyers requested more details and saved the listing for later review.',
+            detailTitle: 'Buyer interest inquiry',
+            detailBadge: 'interest',
+            stage: 'Buyer interest',
+            stageNote: 'Early signal',
+            time: 'Monday / Thursday',
+            timeNote: 'Multiple inquiries',
+            seriousness: 'Medium',
+            seriousnessNote: 'Shows attention, not commitment',
+            takeaway: 'Watch trend',
+            takeawayNote: 'Useful for momentum tracking',
+            meaning: 'Buyer interest is useful because it shows the listing is getting attention even before a showing or offer happens.',
+            note: 'Repeated saves and follow-up questions are the best sign here, especially if they keep happening week after week.',
+            nextStep: 'Track whether interest turns into showings or an offer before changing price or strategy.'
+          },
+          market: {
+            title: 'Market comparison',
+            badge: 'context',
+            desc: 'Nearby homes were reduced this week, so pricing strategy matters right now.',
+            detailTitle: 'Market comparison',
+            detailBadge: 'context',
+            stage: 'Market context',
+            stageNote: 'External comparison',
+            time: 'This week',
+            timeNote: 'Comparable homes shifted',
+            seriousness: 'High',
+            seriousnessNote: 'Impacts pricing decisions',
+            takeaway: 'Review pricing',
+            takeawayNote: 'Use before making a move',
+            meaning: 'Market context helps the seller decide whether their listing is still positioned well against competing homes.',
+            note: 'If nearby homes are dropping price or going pending faster, the seller may need to respond rather than wait too long.',
+            nextStep: 'Compare your listing against the newest comps before deciding whether to hold, cut price, or promote more.'
+          }
+        }
+      },
+      all: {
+        summary: (title) => `Full listing history for ${title}, so the seller can compare early traffic, later activity, and the final outcome in one place.`,
+        metrics: (data) => ({
+          status: data.status,
+          statusNote: data.status === 'Active' ? 'Since launch' : data.status === 'Pending' ? 'Pending / in escrow' : 'Closed listing',
+          showings: data.showingsAll || data.showings,
+          showingsNote: data.showingsAllNote || data.showingsNote,
+          interest: data.interestAll || data.interest,
+          interestNote: data.interestAllNote || data.interestNote,
+          offers: data.offers,
+          offersNote: data.offersNote,
+        }),
+        items: {
+          offer: {
+            title: 'Offer timeline',
+            badge: 'history',
+            desc: 'See how the first offer came in, what changed, and how the negotiation evolved.',
+            detailTitle: 'Offer timeline',
+            detailBadge: 'history',
+            stage: 'Offer history',
+            stageNote: 'Full timeline view',
+            time: 'Since launch',
+            timeNote: 'All offer activity',
+            seriousness: 'High',
+            seriousnessNote: 'Concrete buying action',
+            takeaway: 'Review the path',
+            takeawayNote: 'Shows how the deal evolved',
+            meaning: 'In All mode, the seller can see the complete offer story instead of only the latest event.',
+            note: 'This is useful for understanding how the market responded over time and whether the deal got stronger or weaker.',
+            nextStep: 'Open the offer path to compare timing, price, and negotiation points from the first inquiry to today.'
+          },
+          showing: {
+            title: 'Showing history',
+            badge: 'history',
+            desc: 'Review the full pattern of showings so the seller can see whether interest is building or fading.',
+            detailTitle: 'Showing history',
+            detailBadge: 'history',
+            stage: 'Showing history',
+            stageNote: 'Across the full listing',
+            time: 'Since launch',
+            timeNote: 'All showings included',
+            seriousness: 'Medium',
+            seriousnessNote: 'Trend and volume matter most',
+            takeaway: 'Look for patterns',
+            takeawayNote: 'Helps spot momentum',
+            meaning: 'The full showing history is useful when the seller wants to see whether traffic is accelerating or slowing down.',
+            note: 'A seller usually cares less about the raw count than whether the pace is improving or stalling.',
+            nextStep: 'Check if showing volume has trended up, down, or stayed flat before changing the marketing plan.'
+          },
+          inquiry: {
+            title: 'Interest history',
+            badge: 'history',
+            desc: 'Review the full list of inquiries, saves, and follow-up questions from launch onward.',
+            detailTitle: 'Interest history',
+            detailBadge: 'history',
+            stage: 'Buyer interest history',
+            stageNote: 'All inquiry activity',
+            time: 'Since launch',
+            timeNote: 'Every saved buyer included',
+            seriousness: 'Medium',
+            seriousnessNote: 'Good for trend spotting',
+            takeaway: 'Watch the lead quality',
+            takeawayNote: 'Not all interest is equal',
+            meaning: 'The All view shows whether interest has stayed consistent or if the listing only had a short burst of attention.',
+            note: 'This is especially helpful if the seller wants to know whether the listing is still competitive or has gone stale.',
+            nextStep: 'Use the history to decide whether to keep waiting, refresh the listing, or change price strategy.'
+          },
+          market: {
+            title: 'Market history',
+            badge: 'history',
+            desc: 'See how nearby comps and reductions changed across the full life of the listing.',
+            detailTitle: 'Market history',
+            detailBadge: 'history',
+            stage: 'Market context',
+            stageNote: 'Full comparison timeline',
+            time: 'Since launch',
+            timeNote: 'Comps tracked over time',
+            seriousness: 'High',
+            seriousnessNote: 'Strongly affects strategy',
+            takeaway: 'Compare against trends',
+            takeawayNote: 'Supports pricing decisions',
+            meaning: 'All mode gives the seller the larger context behind each weekly recommendation.',
+            note: 'This helps explain why the agent is recommending patience, a price change, or more promotion.',
+            nextStep: 'Review the full market history before deciding on the next pricing or marketing move.'
+          }
+        }
+      }
+    };
+
+    function renderActivityItems(data) {
+      const groups = dashboardFilter === 'thisWeek'
+        ? [{ label: data.thisWeekLabel || 'This week', items: data.thisWeekActivity || [] }]
+        : [{ label: data.thisWeekLabel || 'This week', items: data.thisWeekActivity || [] }, ...(data.previousActivities || [])];
+
+      selectedActivity.innerHTML = groups.map(group => `
+        <div class="feed-item">
+          <div class="time">${group.label}</div>
+          <p>${group.items.map(item => `• ${item}`).join('<br>')}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderClientPortal(data) {
+      const state = clientPortalStates[clientFilter] || clientPortalStates.thisWeek;
+      const metrics = state.metrics(data);
+      const items = state.items || {};
+      const selected = items[currentClientItem] || items.offer || Object.values(items)[0];
+      if (!selected) return;
+
+      clientPortalTitle.textContent = `What’s happening with ${data.title}?`;
+      clientStatus.textContent = metrics.status || data.status || 'Active';
+      clientStatusNote.textContent = metrics.statusNote || '';
+      clientShowings.textContent = metrics.showings || data.showings || '—';
+      clientShowingsNote.textContent = metrics.showingsNote || '';
+      clientInterest.textContent = metrics.interest || data.interest || '—';
+      clientInterestNote.textContent = metrics.interestNote || '';
+      clientOffers.textContent = metrics.offers || data.offers || '—';
+      clientOffersNote.textContent = metrics.offersNote || '';
+      clientWeekSummary.textContent = selected.meaning || '';
+      clientWeekRecommendation.textContent = selected.nextStep || '';
+
+      clientFilterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.clientFilter === clientFilter));
+
+      clientInterestList.querySelectorAll('[data-client-item]').forEach(card => {
+        const item = items[card.dataset.clientItem];
+        if (!item) return;
+        const titleEl = card.querySelector('strong');
+        const badgeEl = card.querySelector('.badge');
+        const helpEl = card.querySelector('.help');
+        if (titleEl) titleEl.textContent = item.title;
+        if (badgeEl) badgeEl.textContent = item.badge;
+        if (helpEl) helpEl.textContent = item.desc;
+        card.classList.toggle('active', card.dataset.clientItem === currentClientItem);
+      });
+
+      clientDetailTitle.textContent = selected.detailTitle || selected.title;
+      clientDetailBadge.textContent = selected.detailBadge || 'detail';
+      clientDetailStage.textContent = selected.stage || '—';
+      clientDetailStageNote.textContent = selected.stageNote || '';
+      clientDetailTime.textContent = selected.time || '—';
+      clientDetailTimeNote.textContent = selected.timeNote || '';
+      clientDetailSeriousness.textContent = selected.seriousness || '—';
+      clientDetailSeriousnessNote.textContent = selected.seriousnessNote || '';
+      clientDetailTakeaway.textContent = selected.takeaway || '—';
+      clientDetailTakeawayNote.textContent = selected.takeawayNote || '';
+      clientDetailMeaning.textContent = selected.meaning || '';
+      clientDetailNote.textContent = selected.note || '';
+      clientDetailNextStep.textContent = selected.nextStep || '';
+      const hasOfferPacket = currentClientItem === 'offer';
+      if (clientOfferLink) {
+        clientOfferLink.href = clientOfferPacketHref;
+        clientOfferLink.textContent = hasOfferPacket ? 'View actual offer' : 'Open related record';
+        clientOfferLink.style.display = hasOfferPacket ? 'inline-flex' : 'none';
+      }
+      if (clientDetailDocLink) {
+        clientDetailDocLink.href = clientOfferPacketHref;
+        clientDetailDocLink.textContent = hasOfferPacket ? 'Open actual offer document' : 'View related record';
+        clientDetailDocLink.style.display = hasOfferPacket ? 'inline-flex' : 'none';
+      }
+    }
+
+    function renderListing(key) {
+      currentListingKey = key;
+      const data = listings[key];
+      if (!data) return;
+      const isThisWeek = dashboardFilter === 'thisWeek';
+      selectedTitle.textContent = data.title;
+      selectedStatus.textContent = data.status;
+      selectedStatus.className = data.status === 'Active' ? 'badge green' : 'badge gray';
+      selectedShowings.textContent = isThisWeek ? (data.showingsWeek || data.showings) : (data.showingsAll || data.showings);
+      selectedShowingsNote.textContent = isThisWeek ? (data.showingsWeekNote || data.showingsNote) : (data.showingsAllNote || data.showingsNote);
+      selectedInterest.textContent = isThisWeek ? (data.interestWeek || data.interest) : (data.interestAll || data.interest);
+      selectedInterestNote.textContent = isThisWeek ? (data.interestWeekNote || data.interestNote) : (data.interestAllNote || data.interestNote);
+      selectedOffers.textContent = data.offers;
+      selectedOffersNote.textContent = data.offersNote;
+      selectedPrice.textContent = data.price;
+      selectedPriceNote.textContent = data.priceNote;
+      renderActivityItems(data);
+      renderClientPortal(data);
+      if (draftWeekLabel) draftWeekLabel.textContent = data.draftWeek || 'This week';
+      if (draftSubject) draftSubject.textContent = `Weekly update — ${data.title || 'Listing'}`;
+      if (draftSummary) draftSummary.textContent = data.draftSummary || '';
+      if (draftRecommendation) draftRecommendation.textContent = data.draftRecommendation || '';
+      listingButtons.forEach(btn => {
+        const badge = btn.querySelector('.badge');
+        if (!badge) return;
+        const status = (btn.dataset.status || 'active').toLowerCase();
+        if (btn.dataset.listing === key) {
+          badge.textContent = 'Selected';
+        } else if (status === 'active') {
+          badge.textContent = 'Queued';
+        } else if (status === 'pending') {
+          badge.textContent = 'Pending';
+        } else if (status === 'closed') {
+          badge.textContent = 'Closed';
+        } else {
+          badge.textContent = 'Queued';
+        }
+      });
+      dashboardFilterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.dashboardFilter === dashboardFilter));
+    }
+
+    dashboardFilterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        dashboardFilter = btn.dataset.dashboardFilter || 'thisWeek';
+        renderListing(currentListingKey);
+      });
+    });
+
+    clientFilterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        clientFilter = btn.dataset.clientFilter || 'thisWeek';
+        renderClientPortal(listings[currentListingKey]);
+      });
+    });
+
+    if (clientInterestList) {
+      clientInterestList.addEventListener('click', (event) => {
+        const card = event.target.closest('[data-client-item]');
+        if (!card) return;
+        currentClientItem = card.dataset.clientItem || 'offer';
+        renderClientPortal(listings[currentListingKey]);
+      });
+    }
+
+    let currentListingKey = 'willow';
+
+    function showView(name) {
+      Object.entries(views).forEach(([key, el]) => {
+        el.classList.toggle('hidden', key !== name);
+      });
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === name));
+      title.textContent = titles[name] || 'AgentLoop';
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => showView(btn.dataset.view));
+    });
+
+    listingButtons.forEach(btn => {
+      btn.addEventListener('click', () => renderListing(btn.dataset.listing));
+    });
+
+    renderListing('willow');
+  </script>
+</body>
+</html>

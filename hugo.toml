@@ -1,0 +1,5 @@
+baseURL = "https://weijia-ren.github.io/agentloop-realestate/"
+languageCode = "en-us"
+title = "AgentLoop Real Estate Wireframe"
+
+# Static site: the landing page lives in static/index.html
