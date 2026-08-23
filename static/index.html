@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AgentLoop Wireframe</title>
+  <title>AgentLoop</title>
   <style>
     :root {
       --bg: #f4f6fa;
@@ -16,6 +16,11 @@
       --dash: #c4d0df;
       --accent: #2457ff;
       --accent2: #0f9d8a;
+      --accent-soft: rgba(36,87,255,.08);
+      --accent-soft-2: rgba(15,157,138,.04);
+      --accent-border: rgba(36,87,255,.22);
+      --accent-shadow: rgba(36,87,255,.08);
+      --accent-ink: #0f766e;
       --shadow: 0 12px 30px rgba(15, 23, 42, .06);
       --radius: 20px;
       --radius-sm: 14px;
@@ -174,8 +179,8 @@
       cursor: pointer;
     }
     .nav button.active {
-      background: rgba(36,87,255,.08);
-      border-color: rgba(36,87,255,.22);
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
     }
     .muted { color: var(--muted); }
     .help {
@@ -292,7 +297,7 @@
       letter-spacing: .01em;
     }
     .listing-weekly-draft .draft-week {
-      color: #1e3a8a;
+      color: var(--accent-ink);
       font-size: 12px;
       font-weight: 800;
     }
@@ -324,9 +329,9 @@
       cursor: pointer;
     }
     .group-tab.active {
-      background: rgba(36,87,255,.08);
-      border-color: rgba(36,87,255,.22);
-      color: #1e3a8a;
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      color: var(--accent-ink);
     }
     .doc-link {
       display: inline-flex;
@@ -335,15 +340,15 @@
       width: fit-content;
       padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(36,87,255,.22);
-      background: rgba(36,87,255,.08);
-      color: #1e3a8a;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-soft);
+      color: var(--accent-ink);
       font-size: 12px;
       font-weight: 800;
       text-decoration: none;
       margin-top: 10px;
     }
-    .doc-link:hover { background: rgba(36,87,255,.12); }
+    .doc-link:hover { background: color-mix(in srgb, var(--accent-soft) 72%, white); }
     .item-actions {
       display: flex;
       justify-content: flex-start;
@@ -399,9 +404,9 @@
       box-shadow: 0 1px 0 rgba(15,23,42,.02);
     }
     .listing-card.active {
-      background: rgba(36,87,255,.06);
-      border-color: rgba(36,87,255,.22);
-      box-shadow: inset 0 0 0 1px rgba(36,87,255,.06);
+      background: linear-gradient(180deg, var(--accent-soft), var(--accent-soft-2), rgba(255,255,255,1));
+      border-color: var(--accent-border);
+      box-shadow: inset 4px 0 0 var(--accent2), 0 10px 24px var(--accent-shadow);
     }
     .listing-card .row1 {
       display: flex;
@@ -526,15 +531,15 @@
     .badge {
       padding: 6px 9px;
       border-radius: 999px;
-      background: rgba(36,87,255,.08);
-      color: #1e3a8a;
+      background: var(--accent-soft);
+      color: var(--accent-ink);
       font-size: 11px;
       font-weight: 800;
       letter-spacing: .08em;
       text-transform: uppercase;
     }
     .badge.gray { background: #eef2f7; color: #334155; }
-    .badge.green { background: rgba(15,157,138,.1); color: #0f766e; }
+    .badge.green { background: #dcfce7; color: #166534; }
     .bar {
       height: 10px;
       border-radius: 999px;
@@ -576,8 +581,8 @@
     }
     .clickable-list-item:hover,
     .clickable-list-item.active {
-      border-color: rgba(36,87,255,.28);
-      box-shadow: 0 8px 24px rgba(36,87,255,.08);
+      border-color: var(--accent-border);
+      box-shadow: 0 8px 18px var(--accent-shadow);
       transform: translateY(-1px);
     }
     .detail-stack {
@@ -613,6 +618,212 @@
       font-size: 12px;
       color: var(--muted);
       line-height: 1.4;
+    }
+    .client-portal-body {
+      display: grid;
+      gap: 18px;
+    }
+    .client-portal-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 16px;
+      align-items: start;
+    }
+    .client-portal-photo {
+      min-width: 0;
+    }
+    .client-portal-photo .client-gallery {
+      margin-bottom: 0;
+    }
+    .client-portal-side {
+      display: grid;
+      gap: 14px;
+      min-width: 0;
+    }
+    .client-metric-row {
+      margin-top: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .client-offer-stack .list {
+      margin-top: 0;
+    }
+    .contact-us {
+      display: grid;
+      gap: 8px;
+      padding-top: 2px;
+      border-top: 1px solid var(--line);
+    }
+    .contact-us .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .contact-us .head h3 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: -0.03em;
+    }
+    .contact-us-pillar {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, var(--panel));
+      box-shadow: 0 8px 16px rgba(15,23,42,.04);
+      overflow: hidden;
+    }
+    .contact-us-row {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .contact-us-row + .contact-us-row {
+      border-top: 1px solid var(--line);
+    }
+    .contact-us-label {
+      font-size: 10px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .contact-us-value {
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    @media (max-width: 640px) {
+      .contact-us-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 10px 12px;
+      }
+    }
+
+    .client-gallery {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .client-gallery-frame {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff 0%, #eef5ff 100%);
+      box-shadow: 0 14px 28px rgba(15,23,42,.08);
+      aspect-ratio: 16 / 9;
+    }
+    .client-gallery-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .client-gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15,23,42,0) 35%, rgba(15,23,42,.42) 100%);
+      pointer-events: none;
+    }
+    .client-gallery-topline {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 1;
+    }
+    .gallery-count {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.88);
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(15,23,42,.14);
+    }
+    .client-gallery-caption {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      max-width: 68%;
+      color: #fff;
+      z-index: 1;
+      text-shadow: 0 4px 10px rgba(15,23,42,.32);
+    }
+    .client-gallery-caption .title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 800;
+      opacity: .96;
+    }
+    .client-gallery-caption .text {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.4;
+      opacity: .92;
+    }
+    .gallery-navs {
+      position: absolute;
+      inset: auto 14px 14px auto;
+      display: flex;
+      gap: 8px;
+      z-index: 1;
+    }
+    .gallery-nav {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      color: #0f172a;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(15,23,42,.16);
+      display: grid;
+      place-items: center;
+    }
+    .gallery-nav:hover {
+      background: #fff;
+    }
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .gallery-thumb {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      padding: 0;
+      background: #fff;
+      cursor: pointer;
+      aspect-ratio: 4 / 3;
+      box-shadow: 0 6px 14px rgba(15,23,42,.05);
+    }
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-thumb.active {
+      border-color: var(--accent-border);
+      box-shadow: 0 10px 20px var(--accent-shadow);
+      transform: translateY(-1px);
     }
     .composer {
       display: grid;
@@ -773,7 +984,7 @@
       .group-tab { width: 100%; }
       .mobile-filter-select { display: none; }
       .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid-2, .grid-3, .split, .detail-grid { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .split, .detail-grid, .client-portal-top { grid-template-columns: 1fr; }
       .panel .head,
       .email-draft .meta,
       .selected-top {
@@ -812,6 +1023,7 @@
         font-size: 13px;
       }
       .metric-row { grid-template-columns: 1fr; }
+      .client-metric-row { grid-template-columns: 1fr; }
       .hero-listing { padding: 12px; }
       .panel .body { padding: 12px; }
       .accordion > summary,
@@ -821,6 +1033,16 @@
       .feed-item,
       .list-item {
         padding: 12px;
+      }
+      .gallery-thumbs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .gallery-nav {
+        width: 38px;
+        height: 38px;
+      }
+      .client-gallery-caption {
+        max-width: 88%;
       }
     }
   </style>
@@ -842,7 +1064,7 @@
           </svg>
         </div>
         <div>
-          <h1>AgentLoop wireframe</h1>
+          <h1>AgentLoop</h1>
         </div>
       </div>
       <div class="pill-row" aria-label="Primary navigation">
@@ -992,7 +1214,7 @@
                       <div class="metric">
                         <div class="label">Showings</div>
                         <div class="value" id="selected-showings">18</div>
-                        <div class="note" id="selected-showings-note">Up 4 this week</div>
+                        <div class="note" id="selected-showings-note">+4 from last week</div>
                       </div>
                       <div class="metric">
                         <div class="label">Interested buyers</div>
@@ -1067,166 +1289,170 @@
           </section>
 
           <section id="client-view" class="space hidden">
-            <div class="hero-listing" style="grid-template-columns: 1.05fr .95fr;">
-              <div class="panel" style="border-radius:18px; box-shadow:none;">
-                <div class="head">
-                  <div>
-                    <div class="eyebrow">Seller portal</div>
-                    <h3 class="big-title" id="client-portal-title">What’s happening with my house?</h3>
-                  </div>
-                  <div class="group-tabs" aria-label="Client portal timeframe">
-                    <button class="group-tab active" data-client-filter="thisWeek">This week</button>
-                    <button class="group-tab" data-client-filter="all">All</button>
-                  </div>
-                  <label class="mobile-switcher mobile-filter-switcher" aria-label="Client portal timeframe">
-                    <span class="sr-only">Client portal timeframe</span>
-                    <select id="client-filter-select" class="mobile-select mobile-filter-select" data-filter-select="client">
-                      <option value="thisWeek">This week</option>
-                      <option value="all">All</option>
-                    </select>
-                  </label>
+            <div class="panel" style="border-radius:18px; box-shadow:none;">
+              <div class="head">
+                <div>
+                  <div class="eyebrow">Seller portal</div>
+                  <h3 class="big-title" id="client-portal-title">My House</h3>
                 </div>
-
-                <div class="metric-row" style="margin-top: 14px;">
-                  <div class="metric">
-                    <div class="label">Current status</div>
-                    <div class="value" id="client-status">Active</div>
-                    <div class="note" id="client-status-note">On market 21 days</div>
-                  </div>
-                  <div class="metric">
-                    <div class="label">Showings</div>
-                    <div class="value" id="client-showings">6</div>
-                    <div class="note" id="client-showings-note">3 private, 3 open house</div>
-                  </div>
-                  <div class="metric">
-                    <div class="label">Interested buyers</div>
-                    <div class="value" id="client-interest">9</div>
-                    <div class="note" id="client-interest-note">Saved / requested info</div>
-                  </div>
-                  <div class="metric">
-                    <div class="label">Offers / contracts</div>
-                    <div class="value" id="client-offers">2</div>
-                    <div class="note" id="client-offers-note">1 verbal, 1 written</div>
-                  </div>
+                <div class="group-tabs" aria-label="Client portal timeframe">
+                  <button class="group-tab active" data-client-filter="thisWeek">This week</button>
+                  <button class="group-tab" data-client-filter="all">All</button>
                 </div>
-
-                <div class="detail-stack" style="margin-top: 18px;">
-                  <div class="list" id="client-interest-list" aria-label="Interest and contract list">
-                    <div class="list-item clickable-list-item active" data-client-item="offer">
-                      <div class="top">
-                        <strong>Written offer received</strong>
-                        <span class="badge green">most important</span>
-                      </div>
-                      <div class="help">1 written offer at $612K with financing and inspection contingencies.</div>
-                      <div class="item-actions">
-                        <a class="doc-link" id="client-offer-link" href="#offer-packet">View actual offer</a>
-                      </div>
-                    </div>
-                    <div class="list-item clickable-list-item" data-client-item="showing">
-                      <div class="top">
-                        <strong>Strong showing feedback</strong>
-                        <span class="badge gray">showing</span>
-                      </div>
-                      <div class="help">Buyers liked the layout and natural light, and said the kitchen feels dated and may need cosmetic updates before they feel ready to make a stronger offer.</div>
-                    </div>
-                    <div class="list-item clickable-list-item" data-client-item="inquiry">
-                      <div class="top">
-                        <strong>Buyer interest inquiry</strong>
-                        <span class="badge gray">interest</span>
-                      </div>
-                      <div class="help">Several buyers requested more details and saved the listing for later review.</div>
-                    </div>
-                    <div class="list-item clickable-list-item" data-client-item="market">
-                      <div class="top">
-                        <strong>Market comparison</strong>
-                        <span class="badge gray">context</span>
-                      </div>
-                      <div class="help">Nearby homes were reduced this week, so pricing strategy matters right now.</div>
-                    </div>
-                  </div>
-                </div>
+                <label class="mobile-switcher mobile-filter-switcher" aria-label="Client portal timeframe">
+                  <span class="sr-only">Client portal timeframe</span>
+                  <select id="client-filter-select" class="mobile-select mobile-filter-select" data-filter-select="client">
+                    <option value="thisWeek">This week</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
               </div>
 
-              <div class="panel" style="border-radius:18px; box-shadow:none;">
-                <div class="head">
-                  <h3 id="client-detail-title">Written offer received</h3>
-                  <span class="badge green" id="client-detail-badge">contract</span>
+              <div class="body client-portal-body">
+                <div class="client-portal-top">
+                  <div class="client-portal-photo">
+                    <div class="client-gallery" aria-label="House photo gallery">
+                      <div class="client-gallery-frame">
+                        <img id="client-gallery-image" alt="House photo" />
+                        <div class="client-gallery-overlay" aria-hidden="true"></div>
+                        <div class="client-gallery-topline">
+                          <div class="eyebrow-mini" id="client-gallery-label">Photo</div>
+                          <div class="gallery-count" id="client-gallery-count">1 / 1</div>
+                        </div>
+                        <div class="client-gallery-caption">
+                          <div class="title">Photo tour</div>
+                          <div class="text" id="client-gallery-caption">Browse the house photos with the arrows or thumbnails below.</div>
+                        </div>
+                        <div class="gallery-navs" aria-label="Photo navigation">
+                          <button type="button" class="gallery-nav" id="client-gallery-prev" aria-label="Previous photo">‹</button>
+                          <button type="button" class="gallery-nav" id="client-gallery-next" aria-label="Next photo">›</button>
+                        </div>
+                      </div>
+                      <div class="gallery-thumbs" id="client-gallery-thumbs" aria-label="House photo thumbnails"></div>
+                    </div>
+                  </div>
+
+                  <div class="client-portal-side">
+                    <div class="metric-row client-metric-row">
+                      <div class="metric">
+                        <div class="label">Current status</div>
+                        <div class="value" id="client-status">Active</div>
+                        <div class="note" id="client-status-note">On market 21 days</div>
+                      </div>
+                      <div class="metric">
+                        <div class="label">Showings</div>
+                        <div class="value" id="client-showings">6</div>
+                        <div class="note" id="client-showings-note">3 private, 3 open house</div>
+                      </div>
+                      <div class="metric">
+                        <div class="label">Interested buyers</div>
+                        <div class="value" id="client-interest">9</div>
+                        <div class="note" id="client-interest-note">Saved / requested info</div>
+                      </div>
+                      <div class="metric">
+                        <div class="label">Offers / contracts</div>
+                        <div class="value" id="client-offers">2</div>
+                        <div class="note" id="client-offers-note">1 verbal, 1 written</div>
+                      </div>
+                    </div>
+
+                    <div class="detail-stack client-offer-stack">
+                      <div class="list" id="client-interest-list" aria-label="Interest and contract list">
+                        <div class="list-item clickable-list-item active" data-client-item="offer">
+                          <div class="top">
+                            <strong>Written offer received</strong>
+                            <span class="badge green">most important</span>
+                          </div>
+                          <div class="help">1 written offer at $612K with financing and inspection contingencies.</div>
+                          <div class="item-actions">
+                            <a class="doc-link" id="client-offer-link" href="#offer-packet">View actual offer</a>
+                          </div>
+                        </div>
+                        <div class="list-item clickable-list-item" data-client-item="showing">
+                          <div class="top">
+                            <strong>Strong showing feedback</strong>
+                            <span class="badge gray">showing</span>
+                          </div>
+                          <div class="help">Buyers liked the layout and natural light, and said the kitchen feels dated and may need cosmetic updates before they feel ready to make a stronger offer.</div>
+                        </div>
+                        <div class="list-item clickable-list-item" data-client-item="inquiry">
+                          <div class="top">
+                            <strong>Buyer interest inquiry</strong>
+                            <span class="badge gray">interest</span>
+                          </div>
+                          <div class="help">Several buyers requested more details and saved the listing for later review.</div>
+                        </div>
+                        <div class="list-item clickable-list-item" data-client-item="market">
+                          <div class="top">
+                            <strong>Market comparison</strong>
+                            <span class="badge gray">context</span>
+                          </div>
+                          <div class="help">Nearby homes were reduced this week, so pricing strategy matters right now.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="body">
+
+                <div class="detail-stack client-offer-detail-stack">
+                  <div class="head">
+                    <h3 id="client-detail-title">Written offer received</h3>
+                    <span class="badge green" id="client-detail-badge">contract</span>
+                  </div>
                   <a class="doc-link" id="client-detail-doc-link" href="#offer-packet">Open actual offer document</a>
-                  <div class="detail-stack">
-                    <div class="detail-grid">
-                      <div class="detail-tile">
-                        <div class="label">Stage</div>
-                        <div class="value" id="client-detail-stage">Written offer</div>
-                        <div class="note" id="client-detail-stage-note">Ready for review</div>
-                      </div>
-                      <div class="detail-tile">
-                        <div class="label">When</div>
-                        <div class="value" id="client-detail-time">Tuesday</div>
-                        <div class="note" id="client-detail-time-note">Presented this week</div>
-                      </div>
-                      <div class="detail-tile">
-                        <div class="label">How serious</div>
-                        <div class="value" id="client-detail-seriousness">High</div>
-                        <div class="note" id="client-detail-seriousness-note">Formal paperwork submitted</div>
-                      </div>
-                      <div class="detail-tile">
-                        <div class="label">Seller takeaway</div>
-                        <div class="value" id="client-detail-takeaway">Review now</div>
-                        <div class="note" id="client-detail-takeaway-note">Best item to open first</div>
-                      </div>
+                  <div class="detail-grid">
+                    <div class="detail-tile">
+                      <div class="label">Stage</div>
+                      <div class="value" id="client-detail-stage">Written offer</div>
+                      <div class="note" id="client-detail-stage-note">Ready for review</div>
                     </div>
-
-                    <div class="feed">
-                      <div class="feed-item">
-                        <div class="time">What this means</div>
-                        <p id="client-detail-meaning">This is the most important type of item for a seller because it moves from interest into a concrete buying proposal.</p>
-                      </div>
-                      <div class="feed-item">
-                        <div class="time">Agent note</div>
-                        <p id="client-detail-note">The seller should compare price, contingencies, and closing timeline before deciding whether to accept or counter.</p>
-                      </div>
-                      <div class="feed-item">
-                        <div class="time">Recommended next step</div>
-                        <p id="client-detail-next-step">Open the offer details, review terms, and decide whether to accept, counter, or hold for more interest.</p>
-                      </div>
+                    <div class="detail-tile">
+                      <div class="label">When</div>
+                      <div class="value" id="client-detail-time">Tuesday</div>
+                      <div class="note" id="client-detail-time-note">Presented this week</div>
+                    </div>
+                    <div class="detail-tile">
+                      <div class="label">How serious</div>
+                      <div class="value" id="client-detail-seriousness">High</div>
+                      <div class="note" id="client-detail-seriousness-note">Formal paperwork submitted</div>
+                    </div>
+                    <div class="detail-tile">
+                      <div class="label">Seller takeaway</div>
+                      <div class="value" id="client-detail-takeaway">Review now</div>
+                      <div class="note" id="client-detail-takeaway-note">Best item to open first</div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="grid-3">
-              <div class="panel">
-                <div class="head"><h3>What sellers care about most</h3></div>
-                <div class="body">
-                  <div class="list">
-                    <div class="list-item"><div class="top"><strong>1. Offers / contracts</strong><span class="badge green">highest priority</span></div><div class="help">This is the most actionable item because it directly changes pricing and negotiation decisions.</div></div>
-                    <div class="list-item"><div class="top"><strong>2. Serious buyer interest</strong><span class="badge gray">important</span></div><div class="help">Saved buyers, repeated inquiries, and strong follow-up questions signal real momentum.</div></div>
-                    <div class="list-item"><div class="top"><strong>3. Showing feedback</strong><span class="badge gray">helpful</span></div><div class="help">This explains what buyers like, what they question, and whether the listing needs changes.</div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="panel">
-                <div class="head"><h3>Weekly summary</h3></div>
-                <div class="body">
                   <div class="feed">
                     <div class="feed-item">
-                      <div class="time">This week</div>
-                      <p id="client-week-summary">Traffic stayed steady, feedback remained mixed on the kitchen, and one written offer came in for review.</p>
+                      <div class="time">Agent note</div>
+                      <p id="client-detail-note">The seller should compare price, contingencies, and closing timeline before deciding whether to accept or counter.</p>
                     </div>
                     <div class="feed-item">
-                      <div class="time">Agent recommendation</div>
-                      <p id="client-week-recommendation">Hold price for now and review the offer details before deciding whether to counter.</p>
+                      <div class="time">Recommended next step</div>
+                      <p id="client-detail-next-step">Open the offer details, review terms, and decide whether to accept, counter, or hold for more interest.</p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="panel">
-                <div class="head"><h3>All-history view</h3></div>
-                <div class="body">
-                  <div class="help">Switch to All to see the full history of showings, interest, offers, and market context from launch.</div>
+
+                  <div class="contact-us">
+                    <div class="head">
+                      <h3>Contact Us</h3>
+                    </div>
+                    <div class="contact-us-pillar" aria-label="Contact methods">
+                      <div class="contact-us-row">
+                        <div class="contact-us-label">Phone</div>
+                        <div class="contact-us-value">(301) 555-0148</div>
+                      </div>
+                      <div class="contact-us-row">
+                        <div class="contact-us-label">Email</div>
+                        <div class="contact-us-value">agent@agentloop.example</div>
+                      </div>
+                      <div class="contact-us-row">
+                        <div class="contact-us-label">Address</div>
+                        <div class="contact-us-value">123 Market Street, Suite 400, Gaithersburg, MD 20877</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1301,29 +1527,116 @@
     const clientDetailSeriousnessNote = document.getElementById('client-detail-seriousness-note');
     const clientDetailTakeaway = document.getElementById('client-detail-takeaway');
     const clientDetailTakeawayNote = document.getElementById('client-detail-takeaway-note');
-    const clientDetailMeaning = document.getElementById('client-detail-meaning');
     const clientDetailNote = document.getElementById('client-detail-note');
     const clientDetailNextStep = document.getElementById('client-detail-next-step');
-    const clientWeekSummary = document.getElementById('client-week-summary');
-    const clientWeekRecommendation = document.getElementById('client-week-recommendation');
     const clientOfferLink = document.getElementById('client-offer-link');
     const clientDetailDocLink = document.getElementById('client-detail-doc-link');
+    const clientGalleryImage = document.getElementById('client-gallery-image');
+    const clientGalleryLabel = document.getElementById('client-gallery-label');
+    const clientGalleryCount = document.getElementById('client-gallery-count');
+    const clientGalleryCaption = document.getElementById('client-gallery-caption');
+    const clientGalleryThumbs = document.getElementById('client-gallery-thumbs');
+    const clientGalleryPrev = document.getElementById('client-gallery-prev');
+    const clientGalleryNext = document.getElementById('client-gallery-next');
     const clientOfferPacketHref = '#offer-packet';
+    let currentClientPhotoIndex = 0;
     const titles = {
       agent: 'Agent dashboard',
       client: 'Client portal',
       settings: 'Setting',
     };
 
+    const listingThemes = {
+      willow: {
+        accent: '#2457ff',
+        accent2: '#0f9d8a',
+        accentSoft: 'rgba(36,87,255,.08)',
+        accentSoft2: 'rgba(15,157,138,.04)',
+        accentBorder: 'rgba(36,87,255,.22)',
+        accentShadow: 'rgba(36,87,255,.08)',
+        accentInk: '#1e3a8a',
+      },
+      maple: {
+        accent: '#2457ff',
+        accent2: '#0f9d8a',
+        accentSoft: 'rgba(36,87,255,.08)',
+        accentSoft2: 'rgba(15,157,138,.04)',
+        accentBorder: 'rgba(36,87,255,.22)',
+        accentShadow: 'rgba(36,87,255,.08)',
+        accentInk: '#1e3a8a',
+      },
+      cedar: {
+        accent: '#3b82f6',
+        accent2: '#14b8a6',
+        accentSoft: 'rgba(59,130,246,.08)',
+        accentSoft2: 'rgba(20,184,166,.04)',
+        accentBorder: 'rgba(59,130,246,.22)',
+        accentShadow: 'rgba(59,130,246,.08)',
+        accentInk: '#0f766e',
+      },
+      brook: {
+        accent: '#1d4ed8',
+        accent2: '#22c55e',
+        accentSoft: 'rgba(29,78,216,.08)',
+        accentSoft2: 'rgba(34,197,94,.04)',
+        accentBorder: 'rgba(29,78,216,.22)',
+        accentShadow: 'rgba(29,78,216,.08)',
+        accentInk: '#0f766e',
+      },
+      pine: {
+        accent: '#2563eb',
+        accent2: '#16a34a',
+        accentSoft: 'rgba(37,99,235,.08)',
+        accentSoft2: 'rgba(22,163,74,.04)',
+        accentBorder: 'rgba(37,99,235,.22)',
+        accentShadow: 'rgba(37,99,235,.08)',
+        accentInk: '#166534',
+      },
+    };
+
+    const listingPhotoSets = {
+      willow: [
+        { label: 'Front exterior', caption: 'Curb appeal and street presence', src: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Living room', caption: 'Bright common space for buyers to imagine daily life', src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Kitchen', caption: 'Updated finishes and prep space', src: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Primary bedroom', caption: 'Quiet private retreat', src: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1400&q=80' },
+      ],
+      maple: [
+        { label: 'Kitchen', caption: 'Fresh photography and clean staging', src: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Dining area', caption: 'Open flow for entertaining', src: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Exterior', caption: 'Front elevation and first impression', src: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Bedroom', caption: 'Soft, calm private space', src: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=80' },
+      ],
+      cedar: [
+        { label: 'Exterior', caption: 'Larger home with a strong street view', src: 'https://images.unsplash.com/photo-1502005097973-6a7082348e28?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Living room', caption: 'Comfortable space for hosting', src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Kitchen', caption: 'Bright center of the home', src: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Office', caption: 'Flexible room buyers can use any way they need', src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80' },
+      ],
+      brook: [
+        { label: 'Front porch', caption: 'Welcoming entry and neighborhood feel', src: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Living space', caption: 'Open, light-filled main room', src: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Kitchen', caption: 'Practical layout and clean surfaces', src: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Bedroom', caption: 'Comfortable rest area', src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80' },
+      ],
+      pine: [
+        { label: 'Exterior', caption: 'Final-sale home with strong curb appeal', src: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Living room', caption: 'The main gathering space', src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Kitchen', caption: 'Warm, polished presentation', src: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80' },
+        { label: 'Patio', caption: 'Outdoor bonus space buyers appreciate', src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80' },
+      ],
+    };
+
     const listings = {
       willow: {
         title: '124 Willow Street',
+        photos: listingPhotoSets.willow,
         status: 'Active',
         summary: 'Snapshot of what is happening with this house, what has changed this week, and what the agent should pay attention to next.',
         showings: '18',
-        showingsNote: 'Up 4 this week',
+        showingsNote: '+4 from last week',
         showingsWeek: '18',
-        showingsWeekNote: 'Up 4 this week',
+        showingsWeekNote: '+4 from last week',
         showingsAll: '41',
         showingsAllNote: 'Since launch',
         interest: '9',
@@ -1371,12 +1684,13 @@
       },
       maple: {
         title: '48 Maple Avenue',
+        photos: listingPhotoSets.maple,
         status: 'Active',
         summary: 'A newer listing that is getting early attention and needs more exposure before a pricing decision.',
         showings: '7',
-        showingsNote: 'Up 2 this week',
+        showingsNote: '+2 from last week',
         showingsWeek: '7',
-        showingsWeekNote: 'Up 2 this week',
+        showingsWeekNote: '+2 from last week',
         showingsAll: '19',
         showingsAllNote: 'Since launch',
         interest: '4',
@@ -1424,12 +1738,13 @@
       },
       cedar: {
         title: '902 Cedar Lane',
+        photos: listingPhotoSets.cedar,
         status: 'Active',
         summary: 'A higher-price listing with one proposal in play and more serious buyer activity than the other homes.',
         showings: '11',
-        showingsNote: 'Up 3 this week',
+        showingsNote: '+3 from last week',
         showingsWeek: '11',
-        showingsWeekNote: 'Up 3 this week',
+        showingsWeekNote: '+3 from last week',
         showingsAll: '28',
         showingsAllNote: 'Since launch',
         interest: '6',
@@ -1477,6 +1792,7 @@
       },
       brook: {
         title: '77 Brook Road',
+        photos: listingPhotoSets.brook,
         status: 'Pending',
         summary: 'A deal in progress with inspection and final contract steps still moving forward.',
         showings: '14',
@@ -1530,6 +1846,7 @@
       },
       pine: {
         title: '11 Pine Court',
+        photos: listingPhotoSets.pine,
         status: 'Closed',
         summary: 'This listing is complete and can be reviewed for lessons learned or sold-price context.',
         showings: '22',
@@ -1780,6 +2097,27 @@
       }
     };
 
+    function applyListingTheme(key) {
+      const theme = listingThemes[key] || listingThemes.willow;
+      const root = document.documentElement.style;
+      root.setProperty('--accent', theme.accent);
+      root.setProperty('--accent2', theme.accent2);
+      root.setProperty('--accent-soft', theme.accentSoft);
+      root.setProperty('--accent-soft-2', theme.accentSoft2);
+      root.setProperty('--accent-border', theme.accentBorder);
+      root.setProperty('--accent-shadow', theme.accentShadow);
+      root.setProperty('--accent-ink', theme.accentInk);
+
+      const grad = document.getElementById('wireGrad');
+      if (grad) {
+        const stops = grad.querySelectorAll('stop');
+        if (stops[0]) stops[0].setAttribute('stop-color', theme.accent);
+        if (stops[1]) stops[1].setAttribute('stop-color', theme.accent2);
+      }
+      const logoStroke = document.querySelector('.mark path');
+      if (logoStroke) logoStroke.setAttribute('stroke', theme.accent);
+    }
+
     function renderActivityItems(data) {
       const groups = dashboardFilter === 'thisWeek'
         ? [{ label: data.thisWeekLabel || 'This week', items: data.thisWeekActivity || [] }]
@@ -1793,6 +2131,41 @@
       `).join('');
     }
 
+    function renderClientGallery(data) {
+      if (!clientGalleryImage || !clientGalleryThumbs || !clientGalleryLabel || !clientGalleryCount) return;
+      const photos = data?.photos || [];
+      if (!photos.length) {
+        clientGalleryImage.removeAttribute('src');
+        clientGalleryImage.alt = `${data?.title || 'House'} photo`;
+        clientGalleryLabel.textContent = 'Photo';
+        clientGalleryCount.textContent = '0 / 0';
+        clientGalleryThumbs.innerHTML = '';
+        return;
+      }
+      if (currentClientPhotoIndex < 0 || currentClientPhotoIndex >= photos.length) {
+        currentClientPhotoIndex = 0;
+      }
+      const currentPhoto = photos[currentClientPhotoIndex];
+      clientGalleryImage.src = currentPhoto.src;
+      clientGalleryImage.alt = `${data.title} — ${currentPhoto.label}`;
+      clientGalleryLabel.textContent = currentPhoto.label || 'Photo';
+      if (clientGalleryCaption) clientGalleryCaption.textContent = currentPhoto.caption || 'Browse the house photos with the arrows or thumbnails below.';
+      clientGalleryCount.textContent = `${currentClientPhotoIndex + 1} / ${photos.length}`;
+      clientGalleryThumbs.innerHTML = photos.map((photo, index) => `
+        <button type="button" class="gallery-thumb${index === currentClientPhotoIndex ? ' active' : ''}" data-photo-index="${index}" aria-label="View ${photo.label}">
+          <img src="${photo.src}" alt="${photo.label}" />
+        </button>
+      `).join('');
+    }
+
+    function stepClientGallery(delta) {
+      const data = listings[currentListingKey];
+      const photos = data?.photos || [];
+      if (!photos.length) return;
+      currentClientPhotoIndex = (currentClientPhotoIndex + delta + photos.length) % photos.length;
+      renderClientGallery(data);
+    }
+
     function renderClientPortal(data) {
       const state = clientPortalStates[clientFilter] || clientPortalStates.thisWeek;
       const metrics = state.metrics(data);
@@ -1800,7 +2173,7 @@
       const selected = items[currentClientItem] || items.offer || Object.values(items)[0];
       if (!selected) return;
 
-      clientPortalTitle.textContent = `What’s happening with ${data.title}?`;
+      clientPortalTitle.textContent = data.title;
       clientStatus.textContent = metrics.status || data.status || 'Active';
       clientStatusNote.textContent = metrics.statusNote || '';
       clientShowings.textContent = metrics.showings || data.showings || '—';
@@ -1809,8 +2182,6 @@
       clientInterestNote.textContent = metrics.interestNote || '';
       clientOffers.textContent = metrics.offers || data.offers || '—';
       clientOffersNote.textContent = metrics.offersNote || '';
-      clientWeekSummary.textContent = selected.meaning || '';
-      clientWeekRecommendation.textContent = selected.nextStep || '';
 
       clientFilterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.clientFilter === clientFilter));
       if (clientFilterSelect && clientFilterSelect.value !== clientFilter) clientFilterSelect.value = clientFilter;
@@ -1837,9 +2208,9 @@
       clientDetailSeriousnessNote.textContent = selected.seriousnessNote || '';
       clientDetailTakeaway.textContent = selected.takeaway || '—';
       clientDetailTakeawayNote.textContent = selected.takeawayNote || '';
-      clientDetailMeaning.textContent = selected.meaning || '';
       clientDetailNote.textContent = selected.note || '';
       clientDetailNextStep.textContent = selected.nextStep || '';
+      renderClientGallery(data);
       const hasOfferPacket = currentClientItem === 'offer';
       if (clientOfferLink) {
         clientOfferLink.href = clientOfferPacketHref;
@@ -1855,8 +2226,10 @@
 
     function renderListing(key) {
       currentListingKey = key;
+      currentClientPhotoIndex = 0;
       const data = listings[key];
       if (!data) return;
+      applyListingTheme(key);
       const isThisWeek = dashboardFilter === 'thisWeek';
       selectedTitle.textContent = data.title;
       selectedStatus.textContent = data.status;
@@ -1877,18 +2250,26 @@
       if (draftRecommendation) draftRecommendation.textContent = data.draftRecommendation || '';
       listingButtons.forEach(btn => {
         const badge = btn.querySelector('.badge');
+        const isSelected = btn.dataset.listing === key;
+        btn.classList.toggle('active', isSelected);
         if (!badge) return;
         const status = (btn.dataset.status || 'active').toLowerCase();
-        if (btn.dataset.listing === key) {
+        badge.classList.remove('green', 'gray');
+        if (isSelected) {
           badge.textContent = 'Selected';
+          badge.classList.add('green');
         } else if (status === 'active') {
           badge.textContent = 'Queued';
+          badge.classList.add('gray');
         } else if (status === 'pending') {
           badge.textContent = 'Pending';
+          badge.classList.add('gray');
         } else if (status === 'closed') {
           badge.textContent = 'Closed';
+          badge.classList.add('gray');
         } else {
           badge.textContent = 'Queued';
+          badge.classList.add('gray');
         }
       });
       dashboardFilterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.dashboardFilter === dashboardFilter));
@@ -1929,6 +2310,21 @@
         if (!card) return;
         currentClientItem = card.dataset.clientItem || 'offer';
         renderClientPortal(listings[currentListingKey]);
+      });
+    }
+
+    if (clientGalleryPrev) {
+      clientGalleryPrev.addEventListener('click', () => stepClientGallery(-1));
+    }
+    if (clientGalleryNext) {
+      clientGalleryNext.addEventListener('click', () => stepClientGallery(1));
+    }
+    if (clientGalleryThumbs) {
+      clientGalleryThumbs.addEventListener('click', (event) => {
+        const btn = event.target.closest('[data-photo-index]');
+        if (!btn) return;
+        currentClientPhotoIndex = Number(btn.dataset.photoIndex || 0);
+        renderClientGallery(listings[currentListingKey]);
       });
     }
 
