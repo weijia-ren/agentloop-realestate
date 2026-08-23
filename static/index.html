@@ -106,6 +106,34 @@
       color: #0f172a;
       box-shadow: 0 1px 2px rgba(15,23,42,.08);
     }
+    .mobile-switcher {
+      display: none;
+      width: 100%;
+    }
+    .mobile-select {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.96);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 750;
+      padding: 10px 12px;
+      box-shadow: 0 8px 22px rgba(15,23,42,.06);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -732,16 +760,8 @@
     @media (max-width: 780px) {
       .wrap { padding: 14px 10px 20px; }
       .topbar { gap: 12px; }
-      .pill-row {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .pill {
-        width: 100%;
-        padding: 10px 8px;
-        white-space: normal;
-      }
+      .pill-row { display: none; }
+      .mobile-switcher { display: block; }
       .hero-listing {
         grid-template-columns: 1fr !important;
       }
@@ -751,6 +771,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .group-tab { width: 100%; }
+      .mobile-filter-select { display: none; }
       .metric-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .grid-2, .grid-3, .split, .detail-grid { grid-template-columns: 1fr; }
       .panel .head,
@@ -771,8 +792,25 @@
       .list-item .top .badge { align-self: flex-start; }
     }
     @media (max-width: 480px) {
-      .pill-row { grid-template-columns: 1fr; }
-      .group-tabs { grid-template-columns: 1fr; }
+      .group-tabs { display: none; }
+      .mobile-filter-select {
+        display: block;
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255,255,255,.96);
+        color: var(--ink);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 800;
+        padding: 10px 12px;
+        margin-bottom: 14px;
+        box-shadow: 0 8px 22px rgba(15,23,42,.06);
+      }
+      .mobile-select {
+        font-size: 13px;
+      }
       .metric-row { grid-template-columns: 1fr; }
       .hero-listing { padding: 12px; }
       .panel .body { padding: 12px; }
@@ -812,6 +850,14 @@
         <button class="pill" data-view="client">Client portal</button>
         <button class="pill" data-view="settings">Setting</button>
       </div>
+      <label class="mobile-switcher" aria-label="Primary navigation">
+        <span class="sr-only">Primary navigation</span>
+        <select id="mobile-view-select" class="mobile-select">
+          <option value="agent">Agent dashboard</option>
+          <option value="client">Client portal</option>
+          <option value="settings">Setting</option>
+        </select>
+      </label>
     </div>
 
     <div class="layout">
@@ -933,6 +979,13 @@
                         <button class="group-tab active" data-dashboard-filter="thisWeek">This week</button>
                         <button class="group-tab" data-dashboard-filter="all">All</button>
                       </div>
+                      <label class="mobile-switcher mobile-filter-switcher" aria-label="Dashboard timeframe">
+                        <span class="sr-only">Dashboard timeframe</span>
+                        <select id="dashboard-filter-select" class="mobile-select mobile-filter-select" data-filter-select="dashboard">
+                          <option value="thisWeek">This week</option>
+                          <option value="all">All</option>
+                        </select>
+                      </label>
                     </div>
 
                     <div class="metric-row">
@@ -1025,6 +1078,13 @@
                     <button class="group-tab active" data-client-filter="thisWeek">This week</button>
                     <button class="group-tab" data-client-filter="all">All</button>
                   </div>
+                  <label class="mobile-switcher mobile-filter-switcher" aria-label="Client portal timeframe">
+                    <span class="sr-only">Client portal timeframe</span>
+                    <select id="client-filter-select" class="mobile-select mobile-filter-select" data-filter-select="client">
+                      <option value="thisWeek">This week</option>
+                      <option value="all">All</option>
+                    </select>
+                  </label>
                 </div>
 
                 <div class="metric-row" style="margin-top: 14px;">
@@ -1209,6 +1269,9 @@
 
   <script>
     const buttons = Array.from(document.querySelectorAll('.pill-row [data-view]'));
+    const mobileViewSelect = document.getElementById('mobile-view-select');
+    const dashboardFilterSelect = document.getElementById('dashboard-filter-select');
+    const clientFilterSelect = document.getElementById('client-filter-select');
     const listingButtons = Array.from(document.querySelectorAll('.listing-card'));
     const views = {
       agent: document.getElementById('agent-view'),
@@ -1750,6 +1813,7 @@
       clientWeekRecommendation.textContent = selected.nextStep || '';
 
       clientFilterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.clientFilter === clientFilter));
+      if (clientFilterSelect && clientFilterSelect.value !== clientFilter) clientFilterSelect.value = clientFilter;
 
       clientInterestList.querySelectorAll('[data-client-item]').forEach(card => {
         const item = items[card.dataset.clientItem];
@@ -1828,6 +1892,7 @@
         }
       });
       dashboardFilterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.dashboardFilter === dashboardFilter));
+      if (dashboardFilterSelect && dashboardFilterSelect.value !== dashboardFilter) dashboardFilterSelect.value = dashboardFilter;
     }
 
     dashboardFilterButtons.forEach(btn => {
@@ -1837,12 +1902,26 @@
       });
     });
 
+    if (dashboardFilterSelect) {
+      dashboardFilterSelect.addEventListener('change', () => {
+        dashboardFilter = dashboardFilterSelect.value || 'thisWeek';
+        renderListing(currentListingKey);
+      });
+    }
+
     clientFilterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         clientFilter = btn.dataset.clientFilter || 'thisWeek';
         renderClientPortal(listings[currentListingKey]);
       });
     });
+
+    if (clientFilterSelect) {
+      clientFilterSelect.addEventListener('change', () => {
+        clientFilter = clientFilterSelect.value || 'thisWeek';
+        renderClientPortal(listings[currentListingKey]);
+      });
+    }
 
     if (clientInterestList) {
       clientInterestList.addEventListener('click', (event) => {
@@ -1861,11 +1940,16 @@
       });
       buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === name));
       title.textContent = titles[name] || 'AgentLoop';
+      if (mobileViewSelect && mobileViewSelect.value !== name) mobileViewSelect.value = name;
     }
 
     buttons.forEach(btn => {
       btn.addEventListener('click', () => showView(btn.dataset.view));
     });
+
+    if (mobileViewSelect) {
+      mobileViewSelect.addEventListener('change', () => showView(mobileViewSelect.value));
+    }
 
     listingButtons.forEach(btn => {
       btn.addEventListener('click', () => renderListing(btn.dataset.listing));
