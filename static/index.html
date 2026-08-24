@@ -619,6 +619,74 @@
       color: var(--muted);
       line-height: 1.4;
     }
+    .offer-timeline {
+      display: grid;
+      gap: 10px;
+    }
+    .offer-timeline-track {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 6px 2px;
+      overflow-x: auto;
+    }
+    .offer-timeline-track::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 54px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-border), var(--accent2));
+      opacity: .9;
+    }
+    .offer-timeline-step {
+      position: relative;
+      z-index: 1;
+      flex: 1 0 98px;
+      min-width: 98px;
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+    }
+    .offer-timeline-step .label {
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -.01em;
+      min-height: 30px;
+    }
+    .offer-timeline-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 2px solid #cbd5e1;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 16px rgba(15,23,42,.06);
+      color: transparent;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .offer-timeline-step.completed .offer-timeline-circle {
+      border-color: #16a34a;
+      background: #dcfce7;
+      color: #166534;
+    }
+    .offer-timeline-step.current .offer-timeline-circle {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 4px var(--accent-soft), 0 8px 16px rgba(15,23,42,.06);
+    }
+    .offer-timeline-step.upcoming .offer-timeline-circle {
+      opacity: .72;
+    }
     .client-portal-body {
       display: grid;
       gap: 18px;
@@ -1217,11 +1285,6 @@
                         <div class="note" id="selected-showings-note">+4 from last week</div>
                       </div>
                       <div class="metric">
-                        <div class="label">Interested buyers</div>
-                        <div class="value" id="selected-interest">9</div>
-                        <div class="note" id="selected-interest-note">Saved / requested info</div>
-                      </div>
-                      <div class="metric">
                         <div class="label">Offers / proposals</div>
                         <div class="value" id="selected-offers">2</div>
                         <div class="note" id="selected-offers-note">1 verbal, 1 written</div>
@@ -1272,7 +1335,7 @@
                             <ul>
                               <li class="draft-recommendation">Hold price for now and keep promotion active for one more week.</li>
                               <li>Monitor nearby reductions and keep tracking showing feedback.</li>
-                              <li>Revisit pricing if interest slows next week.</li>
+                              <li>Revisit pricing if showings slow next week.</li>
                               <li>Promotion should stay active through the next weekend.</li>
                             </ul>
                           </div>
@@ -1333,21 +1396,11 @@
                   </div>
 
                   <div class="client-portal-side">
-                    <div class="metric-row client-metric-row">
-                      <div class="metric">
-                        <div class="label">Current status</div>
-                        <div class="value" id="client-status">Active</div>
-                        <div class="note" id="client-status-note">On market 21 days</div>
-                      </div>
+                    <div class="metric-row">
                       <div class="metric">
                         <div class="label">Showings</div>
                         <div class="value" id="client-showings">6</div>
                         <div class="note" id="client-showings-note">3 private, 3 open house</div>
-                      </div>
-                      <div class="metric">
-                        <div class="label">Interested buyers</div>
-                        <div class="value" id="client-interest">9</div>
-                        <div class="note" id="client-interest-note">Saved / requested info</div>
                       </div>
                       <div class="metric">
                         <div class="label">Offers / contracts</div>
@@ -1355,9 +1408,8 @@
                         <div class="note" id="client-offers-note">1 verbal, 1 written</div>
                       </div>
                     </div>
-
                     <div class="detail-stack client-offer-stack">
-                      <div class="list" id="client-interest-list" aria-label="Interest and contract list">
+                      <div class="list" id="client-interest-list" aria-label="Showings and contract list">
                         <div class="list-item clickable-list-item active" data-client-item="offer">
                           <div class="top">
                             <strong>Written offer received</strong>
@@ -1374,13 +1426,6 @@
                             <span class="badge gray">showing</span>
                           </div>
                           <div class="help">Buyers liked the layout and natural light, and said the kitchen feels dated and may need cosmetic updates before they feel ready to make a stronger offer.</div>
-                        </div>
-                        <div class="list-item clickable-list-item" data-client-item="inquiry">
-                          <div class="top">
-                            <strong>Buyer interest inquiry</strong>
-                            <span class="badge gray">interest</span>
-                          </div>
-                          <div class="help">Several buyers requested more details and saved the listing for later review.</div>
                         </div>
                         <div class="list-item clickable-list-item" data-client-item="market">
                           <div class="top">
@@ -1399,38 +1444,40 @@
                     <h3 id="client-detail-title">Written offer received</h3>
                     <span class="badge green" id="client-detail-badge">contract</span>
                   </div>
-                  <a class="doc-link" id="client-detail-doc-link" href="#offer-packet">Open actual offer document</a>
-                  <div class="detail-grid">
-                    <div class="detail-tile">
-                      <div class="label">Stage</div>
-                      <div class="value" id="client-detail-stage">Written offer</div>
-                      <div class="note" id="client-detail-stage-note">Ready for review</div>
+                  <div class="offer-timeline" id="client-offer-timeline" hidden></div>
+                  <div class="detail-grid" id="client-detail-grid">
+                    <div class="detail-tile" data-detail-tile="0">
+                      <div class="label" id="client-detail-tile-1-label">Stage</div>
+                      <div class="value" id="client-detail-tile-1-value">Written offer</div>
+                      <div class="note" id="client-detail-tile-1-note">Ready for review</div>
                     </div>
-                    <div class="detail-tile">
-                      <div class="label">When</div>
-                      <div class="value" id="client-detail-time">Tuesday</div>
-                      <div class="note" id="client-detail-time-note">Presented this week</div>
+                    <div class="detail-tile" data-detail-tile="1">
+                      <div class="label" id="client-detail-tile-2-label">When</div>
+                      <div class="value" id="client-detail-tile-2-value">Tuesday</div>
+                      <div class="note" id="client-detail-tile-2-note">Presented this week</div>
                     </div>
-                    <div class="detail-tile">
-                      <div class="label">How serious</div>
-                      <div class="value" id="client-detail-seriousness">High</div>
-                      <div class="note" id="client-detail-seriousness-note">Formal paperwork submitted</div>
+                    <div class="detail-tile" data-detail-tile="2">
+                      <div class="label" id="client-detail-tile-3-label">How serious</div>
+                      <div class="value" id="client-detail-tile-3-value">High</div>
+                      <div class="note" id="client-detail-tile-3-note">Formal paperwork submitted</div>
                     </div>
-                    <div class="detail-tile">
-                      <div class="label">Seller takeaway</div>
-                      <div class="value" id="client-detail-takeaway">Review now</div>
-                      <div class="note" id="client-detail-takeaway-note">Best item to open first</div>
+                    <div class="detail-tile" data-detail-tile="3">
+                      <div class="label" id="client-detail-tile-4-label">Seller takeaway</div>
+                      <div class="value" id="client-detail-tile-4-value">Review now</div>
+                      <div class="note" id="client-detail-tile-4-note">Best item to open first</div>
                     </div>
                   </div>
 
-                  <div class="feed">
+                  <div class="history-feed" id="client-detail-history" hidden></div>
+
+                  <div class="feed" id="client-detail-feed">
                     <div class="feed-item">
                       <div class="time">Agent note</div>
                       <p id="client-detail-note">The seller should compare price, contingencies, and closing timeline before deciding whether to accept or counter.</p>
                     </div>
                     <div class="feed-item">
                       <div class="time">Recommended next step</div>
-                      <p id="client-detail-next-step">Open the offer details, review terms, and decide whether to accept, counter, or hold for more interest.</p>
+                      <p id="client-detail-next-step">Open the offer details, review terms, and decide whether to accept, counter, or hold for more activity.</p>
                     </div>
                   </div>
 
@@ -1513,23 +1560,35 @@
     const clientStatusNote = document.getElementById('client-status-note');
     const clientShowings = document.getElementById('client-showings');
     const clientShowingsNote = document.getElementById('client-showings-note');
-    const clientInterest = document.getElementById('client-interest');
-    const clientInterestNote = document.getElementById('client-interest-note');
     const clientOffers = document.getElementById('client-offers');
     const clientOffersNote = document.getElementById('client-offers-note');
     const clientDetailTitle = document.getElementById('client-detail-title');
     const clientDetailBadge = document.getElementById('client-detail-badge');
-    const clientDetailStage = document.getElementById('client-detail-stage');
-    const clientDetailStageNote = document.getElementById('client-detail-stage-note');
-    const clientDetailTime = document.getElementById('client-detail-time');
-    const clientDetailTimeNote = document.getElementById('client-detail-time-note');
-    const clientDetailSeriousness = document.getElementById('client-detail-seriousness');
-    const clientDetailSeriousnessNote = document.getElementById('client-detail-seriousness-note');
-    const clientDetailTakeaway = document.getElementById('client-detail-takeaway');
-    const clientDetailTakeawayNote = document.getElementById('client-detail-takeaway-note');
+    const clientDetailTileLabels = [
+      document.getElementById('client-detail-tile-1-label'),
+      document.getElementById('client-detail-tile-2-label'),
+      document.getElementById('client-detail-tile-3-label'),
+      document.getElementById('client-detail-tile-4-label'),
+    ];
+    const clientDetailTileValues = [
+      document.getElementById('client-detail-tile-1-value'),
+      document.getElementById('client-detail-tile-2-value'),
+      document.getElementById('client-detail-tile-3-value'),
+      document.getElementById('client-detail-tile-4-value'),
+    ];
+    const clientDetailTileNotes = [
+      document.getElementById('client-detail-tile-1-note'),
+      document.getElementById('client-detail-tile-2-note'),
+      document.getElementById('client-detail-tile-3-note'),
+      document.getElementById('client-detail-tile-4-note'),
+    ];
+    const clientDetailHistory = document.getElementById('client-detail-history');
     const clientDetailNote = document.getElementById('client-detail-note');
     const clientDetailNextStep = document.getElementById('client-detail-next-step');
     const clientOfferLink = document.getElementById('client-offer-link');
+    const clientOfferTimeline = document.getElementById('client-offer-timeline');
+    const clientDetailGrid = document.getElementById('client-detail-grid');
+    const clientDetailFeed = document.getElementById('client-detail-feed');
     const clientDetailDocLink = document.getElementById('client-detail-doc-link');
     const clientGalleryImage = document.getElementById('client-gallery-image');
     const clientGalleryLabel = document.getElementById('client-gallery-label');
@@ -1650,7 +1709,7 @@
         price: '$615K',
         priceNote: 'No change this week',
         draftWeek: 'This week · Aug 17–23, 2026',
-        draftSummary: 'Buyer interest stayed healthy, but buyers are still comparing this home against newer inventory.',
+        draftSummary: 'Showing activity stayed healthy, but buyers are still comparing this home against newer inventory.',
         draftRecommendation: 'Hold price for now and keep promotion active for one more week.',
         thisWeekLabel: 'This week · Aug 17–23, 2026',
         thisWeekActivity: [
@@ -1704,7 +1763,7 @@
         price: '$480K',
         priceNote: 'Fresh photos added',
         draftWeek: 'This week · Aug 17–23, 2026',
-        draftSummary: 'Early interest is building, but the listing still needs more exposure before making a pricing move.',
+        draftSummary: 'Early showing activity is building, but the listing still needs more exposure before making a pricing move.',
         draftRecommendation: 'Keep promoting and let the updated photos do more work.',
         thisWeekLabel: 'This week · Aug 17–23, 2026',
         thisWeekActivity: [
@@ -1832,7 +1891,7 @@
           {
             label: 'Previous activities — Aug 3–9, 2026',
             items: [
-              'Buyer interest stayed active through the final negotiation stage.',
+              'Showing activity stayed active through the final negotiation stage.',
               'Seller received updates on offer terms and contingencies.',
               'Closing prep began once the contract was signed.'
             ]
@@ -1904,8 +1963,6 @@
     const selectedStatus = document.getElementById('selected-status');
     const selectedShowings = document.getElementById('selected-showings');
     const selectedShowingsNote = document.getElementById('selected-showings-note');
-    const selectedInterest = document.getElementById('selected-interest');
-    const selectedInterestNote = document.getElementById('selected-interest-note');
     const selectedOffers = document.getElementById('selected-offers');
     const selectedOffersNote = document.getElementById('selected-offers-note');
     const selectedPrice = document.getElementById('selected-price');
@@ -1922,14 +1979,12 @@
 
     const clientPortalStates = {
       thisWeek: {
-        summary: (title) => `A concentrated place for ${title} where the seller can see current status, showings, interest, offers, and the agent’s weekly explanation.`,
+        summary: (title) => `A concentrated place for ${title} where the seller can see current status, showings, offers, and the agent’s weekly explanation.`,
         metrics: (data) => ({
           status: data.status,
           statusNote: data.status === 'Active' ? 'On market 21 days' : data.status === 'Pending' ? 'Inspection / closing prep' : 'Sold and archived',
           showings: data.showingsWeek || data.showings,
           showingsNote: data.showingsWeekNote || data.showingsNote,
-          interest: data.interestWeek || data.interest,
-          interestNote: data.interestWeekNote || data.interestNote,
           offers: data.offers,
           offersNote: data.offersNote,
         }),
@@ -1939,18 +1994,27 @@
             badge: 'most important',
             desc: '1 written offer at $612K with financing and inspection contingencies.',
             detailTitle: 'Written offer received',
-            detailBadge: 'contract',
-            stage: 'Written offer',
-            stageNote: 'Ready for review',
-            time: 'Tuesday',
-            timeNote: 'Presented this week',
-            seriousness: 'High',
-            seriousnessNote: 'Formal paperwork submitted',
-            takeaway: 'Review now',
-            takeawayNote: 'Best item to open first',
-            meaning: 'This is the most important type of item for a seller because it moves from interest into a concrete buying proposal.',
-            note: 'The seller should compare price, contingencies, and closing timeline before deciding whether to accept or counter.',
-            nextStep: 'Open the offer details, review terms, and decide whether to accept, counter, or hold for more interest.'
+            detailBadge: 'history',
+            timelineMilestones: [
+              { label: 'Offer received', status: 'completed' },
+              { label: 'Offer reviewed', status: 'completed' },
+              { label: 'Counteroffer sent', status: 'completed' },
+              { label: 'Offer accepted', status: 'current' },
+              { label: 'Under contract', status: 'upcoming' },
+              { label: 'Inspection complete', status: 'upcoming' },
+              { label: 'Appraisal complete', status: 'upcoming' },
+              { label: 'Clear to close', status: 'upcoming' },
+              { label: 'Closed', status: 'upcoming' },
+            ],
+            historyTitle: 'Offer milestones',
+            historyBadge: 'newest first',
+            historyEntries: [
+              { when: '08/17 (day 14)', title: 'Negotiation point', note: 'Price and closing date became the main trade-offs in the counter discussion.', takeaway: 'Focus on terms that matter most to the seller.' },
+              { when: '08/15 (day 12)', title: 'Written offer drafted', note: 'The buyer moved from verbal inquiry into a formal $612K proposal with financing and inspection contingencies.', takeaway: 'The offer is real enough to compare against other activity.' },
+              { when: '08/10 (day 7)', title: 'First serious discussion', note: 'Buyer asked about inspection timing and whether the seller could be flexible on closing.', takeaway: 'Keep the line open if timing matters.' },
+            ],
+            offerPathLabel: 'Offer timeline',
+            offerPathNote: 'Milestones get a green check once complete.',
           },
           showing: {
             title: 'Strong showing feedback',
@@ -1969,24 +2033,6 @@
             meaning: 'Showing feedback helps the seller understand how buyers are reacting before they make an offer.',
             note: 'The main concern is whether repeated questions about the kitchen are enough to affect price or promotion.',
             nextStep: 'Use this feedback to decide whether to keep waiting, refresh marketing, or improve the presentation.'
-          },
-          inquiry: {
-            title: 'Buyer interest inquiry',
-            badge: 'interest',
-            desc: 'Several buyers requested more details and saved the listing for later review.',
-            detailTitle: 'Buyer interest inquiry',
-            detailBadge: 'interest',
-            stage: 'Buyer interest',
-            stageNote: 'Early signal',
-            time: 'Monday / Thursday',
-            timeNote: 'Multiple inquiries',
-            seriousness: 'Medium',
-            seriousnessNote: 'Shows attention, not commitment',
-            takeaway: 'Watch trend',
-            takeawayNote: 'Useful for momentum tracking',
-            meaning: 'Buyer interest is useful because it shows the listing is getting attention even before a showing or offer happens.',
-            note: 'Repeated saves and follow-up questions are the best sign here, especially if they keep happening week after week.',
-            nextStep: 'Track whether interest turns into showings or an offer before changing price or strategy.'
           },
           market: {
             title: 'Market comparison',
@@ -2015,8 +2061,6 @@
           statusNote: data.status === 'Active' ? 'Since launch' : data.status === 'Pending' ? 'Pending / in escrow' : 'Closed listing',
           showings: data.showingsAll || data.showings,
           showingsNote: data.showingsAllNote || data.showingsNote,
-          interest: data.interestAll || data.interest,
-          interestNote: data.interestAllNote || data.interestNote,
           offers: data.offers,
           offersNote: data.offersNote,
         }),
@@ -2027,26 +2071,46 @@
             desc: 'See how the first offer came in, what changed, and how the negotiation evolved.',
             detailTitle: 'Offer timeline',
             detailBadge: 'history',
-            stage: 'Offer history',
-            stageNote: 'Full timeline view',
-            time: 'Since launch',
-            timeNote: 'All offer activity',
-            seriousness: 'High',
-            seriousnessNote: 'Concrete buying action',
-            takeaway: 'Review the path',
-            takeawayNote: 'Shows how the deal evolved',
-            meaning: 'In All mode, the seller can see the complete offer story instead of only the latest event.',
-            note: 'This is useful for understanding how the market responded over time and whether the deal got stronger or weaker.',
-            nextStep: 'Open the offer path to compare timing, price, and negotiation points from the first inquiry to today.'
+            timelineMilestones: [
+              { label: 'Offer received', status: 'completed' },
+              { label: 'Offer reviewed', status: 'completed' },
+              { label: 'Counteroffer sent', status: 'completed' },
+              { label: 'Offer accepted', status: 'current' },
+              { label: 'Under contract', status: 'upcoming' },
+              { label: 'Inspection complete', status: 'upcoming' },
+              { label: 'Appraisal complete', status: 'upcoming' },
+              { label: 'Clear to close', status: 'upcoming' },
+              { label: 'Closed', status: 'upcoming' },
+            ],
+            historyTitle: 'Offer milestones',
+            historyBadge: 'newest first',
+            historyEntries: [
+              { when: '08/17 (day 14)', title: 'Negotiation point', note: 'Price and closing date became the main trade-offs in the counter discussion.', takeaway: 'Focus on terms that matter most to the seller.' },
+              { when: '08/15 (day 12)', title: 'Written offer drafted', note: 'The buyer moved from verbal inquiry into a formal $612K proposal with financing and inspection contingencies.', takeaway: 'The offer is real enough to compare against other activity.' },
+              { when: '08/10 (day 7)', title: 'First serious discussion', note: 'Buyer asked about inspection timing and whether the seller could be flexible on closing.', takeaway: 'Keep the line open if timing matters.' },
+            ],
+            offerPathLabel: 'Offer timeline',
+            offerPathNote: 'Milestones get a green check once complete.',
           },
           showing: {
             title: 'Showing history',
             badge: 'history',
-            desc: 'Review the full pattern of showings so the seller can see whether interest is building or fading.',
+            desc: 'Review the full pattern of showings so the seller can see whether activity is building or fading.',
             detailTitle: 'Showing history',
             detailBadge: 'history',
-            stage: 'Showing history',
-            stageNote: 'Across the full listing',
+            detailTiles: [
+              { label: 'Latest showing', value: 'Sat 11:00 AM', note: 'Most recent walk-through in the full set.' },
+              { label: 'Key note', value: 'Liked the layout', note: 'Questions centered on the kitchen and roof.' },
+              { label: 'Takeaway', value: 'Keep showing', note: 'Momentum is present, but the home still needs follow-up.' },
+              { label: 'Seller action', value: 'Prep updates', note: 'Share a short FAQ for the most common buyer questions.' },
+            ],
+            historyTitle: 'Showing history',
+            historyBadge: '3 showings',
+            historyEntries: [
+              { when: 'Sun 1:00 PM', title: 'Showing 1', note: 'Buyers liked the layout and natural light, but asked what a kitchen refresh would cost.', takeaway: 'Send a quick upgrade estimate and keep the home available.' },
+              { when: 'Wed 6:30 PM', title: 'Showing 2', note: 'The buyers were positive on the living area and asked about commute timing to the office.', takeaway: 'Lead with commute and neighborhood convenience in follow-up.' },
+              { when: 'Sat 11:00 AM', title: 'Showing 3', note: 'Open-house visitors lingered in the dining room and asked about the roof age.', takeaway: 'Prepare a short roof / HVAC FAQ for the next round.' },
+            ],
             time: 'Since launch',
             timeNote: 'All showings included',
             seriousness: 'Medium',
@@ -2063,15 +2127,27 @@
             desc: 'Review the full list of inquiries, saves, and follow-up questions from launch onward.',
             detailTitle: 'Interest history',
             detailBadge: 'history',
-            stage: 'Buyer interest history',
-            stageNote: 'All inquiry activity',
+            detailTiles: [
+              { label: 'Latest inquiry', value: 'Thu afternoon', note: 'Follow-up came from a buyer who had already saved the listing.' },
+              { label: 'Key note', value: 'Asked for disclosures', note: 'Also wanted commute and school details.' },
+              { label: 'Takeaway', value: 'Follow up fast', note: 'Interest can cool quickly if the reply is slow.' },
+              { label: 'Seller action', value: 'Send packet', note: 'Share disclosures, FAQs, and a short recap of nearby comps.' },
+            ],
+            historyTitle: 'Interest history',
+            historyBadge: '4 touches',
+            historyEntries: [
+              { when: 'Mon morning', title: 'Saved listing', note: 'Two buyers saved the home after the first weekend on market.', takeaway: 'Save activity is a strong early signal that the price is in range.' },
+              { when: 'Mon afternoon', title: 'Question by email', note: 'A buyer asked about HOA fees, taxes, and commute time.', takeaway: 'Answer quickly so the lead does not go cold.' },
+              { when: 'Thu morning', title: 'Second follow-up', note: 'A new buyer requested disclosures and a more detailed room-by-room breakdown.', takeaway: 'Send the packet before the lead moves to the next listing.' },
+              { when: 'Thu evening', title: 'Showing request', note: 'One buyer asked to tour the home in person.', takeaway: 'Turn online activity into a showing while the listing is still fresh.' },
+            ],
             time: 'Since launch',
             timeNote: 'Every saved buyer included',
             seriousness: 'Medium',
             seriousnessNote: 'Good for trend spotting',
             takeaway: 'Watch the lead quality',
-            takeawayNote: 'Not all interest is equal',
-            meaning: 'The All view shows whether interest has stayed consistent or if the listing only had a short burst of attention.',
+            takeawayNote: 'Not all activity is equal',
+            meaning: 'The All view shows whether showing activity has stayed consistent or if the listing only had a short burst of attention.',
             note: 'This is especially helpful if the seller wants to know whether the listing is still competitive or has gone stale.',
             nextStep: 'Use the history to decide whether to keep waiting, refresh the listing, or change price strategy.'
           },
@@ -2081,8 +2157,19 @@
             desc: 'See how nearby comps and reductions changed across the full life of the listing.',
             detailTitle: 'Market history',
             detailBadge: 'history',
-            stage: 'Market context',
-            stageNote: 'Full comparison timeline',
+            detailTiles: [
+              { label: 'Latest comp', value: 'Nearby home dropped $15K', note: 'The newest comparable got more aggressive on price.' },
+              { label: 'When', value: 'This week', note: 'Market movement changed during the current listing window.' },
+              { label: 'Key note', value: 'Faster pendings nearby', note: 'Shows how the competition is reacting.' },
+              { label: 'Seller takeaway', value: 'Compare against trends', note: 'Use market movement to choose the next step.' },
+            ],
+            historyTitle: 'Market checkpoints',
+            historyBadge: '3 checkpoints',
+            historyEntries: [
+              { when: 'Week 1', title: 'Initial comp set', note: 'The first comparable homes were priced slightly above this listing and were moving at a moderate pace.', takeaway: 'The original price looked competitive.' },
+              { when: 'Week 2', title: 'Price reductions nearby', note: 'Two nearby homes cut price after slower-than-expected traffic.', takeaway: 'The listing may need a response if showings lag.' },
+              { when: 'This week', title: 'Faster pending activity', note: 'One comp went pending quickly after a small price adjustment and improved photos.', takeaway: 'Use the newest comp behavior to guide pricing and marketing.' },
+            ],
             time: 'Since launch',
             timeNote: 'Comps tracked over time',
             seriousness: 'High',
@@ -2174,12 +2261,10 @@
       if (!selected) return;
 
       clientPortalTitle.textContent = data.title;
-      clientStatus.textContent = metrics.status || data.status || 'Active';
-      clientStatusNote.textContent = metrics.statusNote || '';
+      if (clientStatus) clientStatus.textContent = metrics.status || data.status || 'Active';
+      if (clientStatusNote) clientStatusNote.textContent = metrics.statusNote || '';
       clientShowings.textContent = metrics.showings || data.showings || '—';
       clientShowingsNote.textContent = metrics.showingsNote || '';
-      clientInterest.textContent = metrics.interest || data.interest || '—';
-      clientInterestNote.textContent = metrics.interestNote || '';
       clientOffers.textContent = metrics.offers || data.offers || '—';
       clientOffersNote.textContent = metrics.offersNote || '';
 
@@ -2198,16 +2283,78 @@
         card.classList.toggle('active', card.dataset.clientItem === currentClientItem);
       });
 
+      const hasOfferTimeline = Array.isArray(selected.timelineMilestones) && selected.timelineMilestones.length > 0;
+      if (clientOfferTimeline) {
+        if (hasOfferTimeline) {
+          clientOfferTimeline.hidden = false;
+          clientOfferTimeline.innerHTML = `
+            <div class="head"><h3>${selected.offerPathLabel || 'Offer timeline'}</h3><span class="badge gray">${selected.offerPathNote || 'Milestones'}</span></div>
+            <div class="offer-timeline-track">
+              ${selected.timelineMilestones.map(milestone => `
+                <div class="offer-timeline-step ${milestone.status || 'upcoming'}">
+                  <div class="label">${milestone.label || ''}</div>
+                  <div class="offer-timeline-circle">${milestone.status === 'completed' ? '✓' : ''}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else {
+          clientOfferTimeline.hidden = true;
+          clientOfferTimeline.innerHTML = '';
+        }
+      }
+
+      const detailTiles = selected.detailTiles || [
+        { label: selected.stageLabel || 'Stage', value: selected.stage || '—', note: selected.stageNote || '' },
+        { label: selected.timeLabel || 'When', value: selected.time || '—', note: selected.timeNote || '' },
+        { label: selected.seriousnessLabel || 'How serious', value: selected.seriousness || '—', note: selected.seriousnessNote || '' },
+        { label: selected.takeawayLabel || 'Seller takeaway', value: selected.takeaway || '—', note: selected.takeawayNote || '' },
+      ];
+
       clientDetailTitle.textContent = selected.detailTitle || selected.title;
       clientDetailBadge.textContent = selected.detailBadge || 'detail';
-      clientDetailStage.textContent = selected.stage || '—';
-      clientDetailStageNote.textContent = selected.stageNote || '';
-      clientDetailTime.textContent = selected.time || '—';
-      clientDetailTimeNote.textContent = selected.timeNote || '';
-      clientDetailSeriousness.textContent = selected.seriousness || '—';
-      clientDetailSeriousnessNote.textContent = selected.seriousnessNote || '';
-      clientDetailTakeaway.textContent = selected.takeaway || '—';
-      clientDetailTakeawayNote.textContent = selected.takeawayNote || '';
+      if (clientDetailGrid) clientDetailGrid.style.display = hasOfferTimeline ? 'none' : '';
+      if (clientDetailFeed) clientDetailFeed.style.display = hasOfferTimeline ? 'none' : '';
+      if (clientDetailDocLink) clientDetailDocLink.style.display = hasOfferTimeline ? 'none' : '';
+      if (clientOfferLink) clientOfferLink.style.display = hasOfferTimeline ? 'none' : '';
+
+      clientDetailTileLabels.forEach((el, index) => {
+        if (!el) return;
+        const tile = detailTiles[index] || {};
+        el.textContent = tile.label || '';
+      });
+      clientDetailTileValues.forEach((el, index) => {
+        if (!el) return;
+        const tile = detailTiles[index] || {};
+        el.textContent = tile.value || '—';
+      });
+      clientDetailTileNotes.forEach((el, index) => {
+        if (!el) return;
+        const tile = detailTiles[index] || {};
+        el.textContent = tile.note || '';
+      });
+
+      if (clientDetailHistory) {
+        const historyEntries = selected.historyEntries || [];
+        if (!historyEntries.length) {
+          clientDetailHistory.hidden = true;
+          clientDetailHistory.innerHTML = '';
+        } else {
+          clientDetailHistory.hidden = false;
+          clientDetailHistory.innerHTML = `
+            <div class="head"><h3>${selected.historyTitle || 'History'}</h3><span class="badge gray">${selected.historyBadge || `${historyEntries.length} entries`}</span></div>
+            <div class="list">
+              ${historyEntries.map(entry => `
+                <div class="feed-item">
+                  <div class="time">${entry.when || ''}</div>
+                  <p><strong>${entry.title || ''}</strong><br>${entry.note || ''}<br><span style="opacity:.72;">Takeaway: ${entry.takeaway || ''}</span></p>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      }
+
       clientDetailNote.textContent = selected.note || '';
       clientDetailNextStep.textContent = selected.nextStep || '';
       renderClientGallery(data);
@@ -2236,8 +2383,6 @@
       selectedStatus.className = data.status === 'Active' ? 'badge green' : 'badge gray';
       selectedShowings.textContent = isThisWeek ? (data.showingsWeek || data.showings) : (data.showingsAll || data.showings);
       selectedShowingsNote.textContent = isThisWeek ? (data.showingsWeekNote || data.showingsNote) : (data.showingsAllNote || data.showingsNote);
-      selectedInterest.textContent = isThisWeek ? (data.interestWeek || data.interest) : (data.interestAll || data.interest);
-      selectedInterestNote.textContent = isThisWeek ? (data.interestWeekNote || data.interestNote) : (data.interestAllNote || data.interestNote);
       selectedOffers.textContent = data.offers;
       selectedOffersNote.textContent = data.offersNote;
       selectedPrice.textContent = data.price;
