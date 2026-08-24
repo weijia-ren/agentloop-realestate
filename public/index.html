@@ -2099,17 +2099,17 @@
             detailTitle: 'Showing history',
             detailBadge: 'history',
             detailTiles: [
-              { label: 'Latest showing', value: 'Sat 11:00 AM', note: 'Most recent walk-through in the full set.' },
+              { label: 'Latest showing', value: '8/16 Sun 1:00 PM', note: 'Most recent walk-through in the full set.' },
               { label: 'Key note', value: 'Liked the layout', note: 'Questions centered on the kitchen and roof.' },
               { label: 'Takeaway', value: 'Keep showing', note: 'Momentum is present, but the home still needs follow-up.' },
               { label: 'Seller action', value: 'Prep updates', note: 'Share a short FAQ for the most common buyer questions.' },
             ],
             historyTitle: 'Showing history',
-            historyBadge: '3 showings',
+            historyBadge: 'newest first',
             historyEntries: [
-              { when: 'Sun 1:00 PM', title: 'Showing 1', note: 'Buyers liked the layout and natural light, but asked what a kitchen refresh would cost.', takeaway: 'Send a quick upgrade estimate and keep the home available.' },
-              { when: 'Wed 6:30 PM', title: 'Showing 2', note: 'The buyers were positive on the living area and asked about commute timing to the office.', takeaway: 'Lead with commute and neighborhood convenience in follow-up.' },
-              { when: 'Sat 11:00 AM', title: 'Showing 3', note: 'Open-house visitors lingered in the dining room and asked about the roof age.', takeaway: 'Prepare a short roof / HVAC FAQ for the next round.' },
+              { sortDate: '2026-08-16T13:00:00', when: '8/16 Sun 1:00 PM', title: 'Showing 1', note: 'Buyers liked the layout and natural light, but asked what a kitchen refresh would cost.', takeaway: 'Send a quick upgrade estimate and keep the home available.' },
+              { sortDate: '2026-08-13T18:30:00', when: '8/13 Wed 6:30 PM', title: 'Showing 2', note: 'The buyers were positive on the living area and asked about commute timing to the office.', takeaway: 'Lead with commute and neighborhood convenience in follow-up.' },
+              { sortDate: '2026-08-10T11:00:00', when: '8/10 Sun 11:00 AM', title: 'Showing 3', note: 'Open-house visitors lingered in the dining room and asked about the roof age.', takeaway: 'Prepare a short roof / HVAC FAQ for the next round.' },
             ],
             time: 'Since launch',
             timeNote: 'All showings included',
@@ -2164,11 +2164,11 @@
               { label: 'Seller takeaway', value: 'Compare against trends', note: 'Use market movement to choose the next step.' },
             ],
             historyTitle: 'Market checkpoints',
-            historyBadge: '3 checkpoints',
+            historyBadge: 'newest first',
             historyEntries: [
-              { when: 'Week 1', title: 'Initial comp set', note: 'The first comparable homes were priced slightly above this listing and were moving at a moderate pace.', takeaway: 'The original price looked competitive.' },
-              { when: 'Week 2', title: 'Price reductions nearby', note: 'Two nearby homes cut price after slower-than-expected traffic.', takeaway: 'The listing may need a response if showings lag.' },
-              { when: 'This week', title: 'Faster pending activity', note: 'One comp went pending quickly after a small price adjustment and improved photos.', takeaway: 'Use the newest comp behavior to guide pricing and marketing.' },
+              { sortDate: '2026-08-16T10:00:00', when: '8/16 Sun 10:00 AM', title: 'Faster pending activity', note: 'One comp went pending quickly after a small price adjustment and improved photos.', takeaway: 'Use the newest comp behavior to guide pricing and marketing.' },
+              { sortDate: '2026-08-12T15:00:00', when: '8/12 Tue 3:00 PM', title: 'Price reductions nearby', note: 'Two nearby homes cut price after slower-than-expected traffic.', takeaway: 'The listing may need a response if showings lag.' },
+              { sortDate: '2026-08-05T09:00:00', when: '8/5 Tue 9:00 AM', title: 'Initial comp set', note: 'The first comparable homes were priced slightly above this listing and were moving at a moderate pace.', takeaway: 'The original price looked competitive.' },
             ],
             time: 'Since launch',
             timeNote: 'Comps tracked over time',
@@ -2216,6 +2216,17 @@
           <p>${group.items.map(item => `• ${item}`).join('<br>')}</p>
         </div>
       `).join('');
+    }
+
+    function sortHistoryEntries(entries) {
+      return [...(entries || [])].sort((a, b) => {
+        const aTime = a?.sortDate ? new Date(a.sortDate).getTime() : null;
+        const bTime = b?.sortDate ? new Date(b.sortDate).getTime() : null;
+        if (aTime !== null && bTime !== null) return bTime - aTime;
+        if (aTime !== null) return -1;
+        if (bTime !== null) return 1;
+        return 0;
+      });
     }
 
     function renderClientGallery(data) {
@@ -2335,7 +2346,7 @@
       });
 
       if (clientDetailHistory) {
-        const historyEntries = selected.historyEntries || [];
+        const historyEntries = sortHistoryEntries(selected.historyEntries || []);
         if (!historyEntries.length) {
           clientDetailHistory.hidden = true;
           clientDetailHistory.innerHTML = '';
