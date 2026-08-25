@@ -333,6 +333,139 @@
       border-color: var(--accent-border);
       color: var(--accent-ink);
     }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .input-field {
+      display: grid;
+      gap: 6px;
+    }
+    .input-field label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .input-field input,
+    .input-field select,
+    .input-field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+      padding: 10px 12px;
+      box-sizing: border-box;
+    }
+    .input-field textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+    .input-span-2 { grid-column: 1 / -1; }
+    .input-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .primary-btn,
+    .secondary-btn {
+      border-radius: 999px;
+      padding: 10px 14px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .primary-btn {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 20px var(--accent-shadow);
+    }
+    .secondary-btn {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .agent-entry-panel {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcff;
+      overflow: hidden;
+    }
+    .agent-entry-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .agent-entry-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    .agent-entry-card[open] {
+      border-color: var(--accent-border);
+      box-shadow: 0 12px 24px var(--accent-shadow);
+    }
+    .agent-entry-card summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .agent-entry-card summary::-webkit-details-marker { display: none; }
+    .agent-entry-summary {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+    .agent-entry-summary-title {
+      font-size: 13px;
+      font-weight: 850;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .agent-entry-summary-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .agent-entry-summary-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+    .agent-entry-body {
+      border-top: 1px solid var(--line);
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+    .agent-entry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .agent-entry-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .agent-entry-actions .secondary-btn {
+      padding-inline: 12px;
+    }
     .doc-link {
       display: inline-flex;
       align-items: center;
@@ -1137,6 +1270,7 @@
       </div>
       <div class="pill-row" aria-label="Primary navigation">
         <button class="pill active" data-view="agent">Agent dashboard</button>
+        <button class="pill" data-view="agentInput">Agent input</button>
         <button class="pill" data-view="client">Client portal</button>
         <button class="pill" data-view="settings">Setting</button>
       </div>
@@ -1144,6 +1278,7 @@
         <span class="sr-only">Primary navigation</span>
         <select id="mobile-view-select" class="mobile-select">
           <option value="agent">Agent dashboard</option>
+          <option value="agentInput">Agent input</option>
           <option value="client">Client portal</option>
           <option value="settings">Setting</option>
         </select>
@@ -1351,6 +1486,100 @@
 
           </section>
 
+
+          <section id="agent-input-view" class="space hidden">
+            <div class="panel" style="border-radius:18px; box-shadow:none;">
+              <div class="head">
+                <div>
+                  <div class="eyebrow">Agent workspace</div>
+                  <h3 class="big-title">Agent input</h3>
+                </div>
+                <span class="badge green">Event-based</span>
+              </div>
+              <div class="body">
+                <div class="help">
+                  Log new activity here only when something happens. Each showing becomes its own entry, and the dashboard counts showings backstage.
+                </div>
+                <div class="input-grid" style="margin-top:12px;">
+                  <div class="input-field input-span-2">
+                    <label for="agent-update-type">Update type</label>
+                    <select id="agent-update-type">
+                      <option>New showing</option>
+                      <option>Showing feedback</option>
+                      <option>Offer update</option>
+                      <option>Price strategy change</option>
+                    </select>
+                  </div>
+                  <div class="input-field">
+                    <label for="agent-showing-datetime">Showing date &amp; time</label>
+                    <input id="agent-showing-datetime" type="datetime-local" />
+                  </div>
+                  <div class="input-field">
+                    <label for="agent-showing-type">Showing type</label>
+                    <select id="agent-showing-type">
+                      <option>Private showing</option>
+                      <option>Open house</option>
+                      <option>Second showing</option>
+                      <option>Broker tour</option>
+                    </select>
+                  </div>
+                  <div class="input-field">
+                    <label for="agent-buyer-feedback">Buyer feedback</label>
+                    <input id="agent-buyer-feedback" type="text" placeholder="Liked layout, asked about kitchen" />
+                  </div>
+                  <div class="input-field">
+                    <label for="agent-follow-up">Follow-up needed?</label>
+                    <select id="agent-follow-up">
+                      <option>Send thank-you note</option>
+                      <option>Share seller FAQ</option>
+                      <option>Ask for second showing</option>
+                      <option>No follow-up needed</option>
+                    </select>
+                  </div>
+                  <div class="input-field">
+                    <label for="agent-offers">Offers / proposals</label>
+                    <input id="agent-offers" type="number" value="2" />
+                  </div>
+                  <div class="input-field">
+                    <label for="agent-price">List price</label>
+                    <input id="agent-price" type="text" value="$615K" />
+                  </div>
+                  <div class="input-field input-span-2">
+                    <label for="agent-notes">Agent notes for draft</label>
+                    <textarea id="agent-notes" placeholder="Short notes for the seller update, buyer feedback, or market context."></textarea>
+                  </div>
+                  <div class="input-field input-span-2">
+                    <label for="agent-recommendation">Recommended seller message</label>
+                    <textarea id="agent-recommendation" placeholder="What should the seller hear this week?"></textarea>
+                  </div>
+                </div>
+                <div class="input-actions">
+                  <button class="primary-btn" type="button" id="add-showing-entry-btn">Add showing entry</button>
+                  <button class="secondary-btn" type="button" id="generate-draft-btn">Generate seller draft</button>
+                </div>
+                <div class="agent-entry-panel">
+                  <div class="head">
+                    <div>
+                      <div class="eyebrow">Saved entries</div>
+                      <h3 class="big-title">Previous showing entries</h3>
+                    </div>
+                    <span class="badge gray">Collapsed by default</span>
+                  </div>
+                  <div class="body">
+                    <div class="help">Newest entry appears first. Open any card to edit it, then save or delete when done.</div>
+                    <div id="agent-entry-list" class="agent-entry-list" aria-live="polite"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-3" style="margin-top:14px;">
+              <div class="panel"><div class="head"><h3>What the agent enters</h3></div><div class="body"><div class="help">One entry per showing plus any other new updates. No weekly recounting required.</div></div></div>
+              <div class="panel"><div class="head"><h3>What the app fills</h3></div><div class="body"><div class="help">Showing totals, activity summaries, and the seller draft can be calculated from the logged events.</div></div></div>
+              <div class="panel"><div class="head"><h3>Why this is separate</h3></div><div class="body"><div class="help">The main dashboard stays clean while this tab captures new inputs only when they happen.</div></div></div>
+            </div>
+          </section>
+
           <section id="client-view" class="space hidden">
             <div class="panel" style="border-radius:18px; box-shadow:none;">
               <div class="head">
@@ -1548,6 +1777,7 @@
     const listingButtons = Array.from(document.querySelectorAll('.listing-card'));
     const views = {
       agent: document.getElementById('agent-view'),
+      agentInput: document.getElementById('agent-input-view'),
       client: document.getElementById('client-view'),
       summary: document.getElementById('summary-view'),
       settings: document.getElementById('settings-view'),
@@ -1599,8 +1829,22 @@
     const clientGalleryNext = document.getElementById('client-gallery-next');
     const clientOfferPacketHref = '#offer-packet';
     let currentClientPhotoIndex = 0;
+    const agentEntryStorageKey = 'agentloop.agent.entries.v1';
+    const agentEntryList = document.getElementById('agent-entry-list');
+    const addShowingEntryBtn = document.getElementById('add-showing-entry-btn');
+    const generateDraftBtn = document.getElementById('generate-draft-btn');
+    const agentUpdateType = document.getElementById('agent-update-type');
+    const agentShowingDateTime = document.getElementById('agent-showing-datetime');
+    const agentShowingType = document.getElementById('agent-showing-type');
+    const agentBuyerFeedback = document.getElementById('agent-buyer-feedback');
+    const agentFollowUp = document.getElementById('agent-follow-up');
+    const agentOffers = document.getElementById('agent-offers');
+    const agentPrice = document.getElementById('agent-price');
+    const agentNotes = document.getElementById('agent-notes');
+    const agentRecommendation = document.getElementById('agent-recommendation');
     const titles = {
       agent: 'Agent dashboard',
+      agentInput: 'Agent input',
       client: 'Client portal',
       settings: 'Setting',
     };
@@ -2412,6 +2656,7 @@
       selectedPriceNote.textContent = data.priceNote;
       renderActivityItems(data);
       renderClientPortal(data);
+      renderAgentEntries();
       if (draftWeekLabel) draftWeekLabel.textContent = data.draftWeek || 'This week';
       if (draftSubject) draftSubject.textContent = `Weekly update — ${data.title || 'Listing'}`;
       if (draftSummary) draftSummary.textContent = data.draftSummary || '';
@@ -2497,6 +2742,344 @@
     }
 
     let currentListingKey = 'willow';
+    let agentEntryFocusId = null;
+    const agentEntriesByListing = readStoredAgentEntries();
+    seedExampleAgentEntries();
+
+    function storageAvailable() {
+      try {
+        return typeof window !== 'undefined' && !!window.localStorage;
+      } catch (_error) {
+        return false;
+      }
+    }
+
+    function readStoredAgentEntries() {
+      if (!storageAvailable()) return {};
+      try {
+        const raw = window.localStorage.getItem(agentEntryStorageKey);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (_error) {
+        return {};
+      }
+    }
+
+    function saveStoredAgentEntries() {
+      if (!storageAvailable()) return;
+      window.localStorage.setItem(agentEntryStorageKey, JSON.stringify(agentEntriesByListing));
+    }
+
+    function seedExampleAgentEntries() {
+      const entries = ensureListingEntries(currentListingKey);
+      if (entries.length) return false;
+      const now = Date.now();
+      const ago = (days, hours = 0) => new Date(now - ((days * 24 + hours) * 60 * 60 * 1000)).toISOString();
+      entries.push(
+        {
+          id: 'sample-willow-entry-1',
+          createdAt: ago(3, 5),
+          updatedAt: ago(3, 5),
+          updateType: 'New showing',
+          showingDateTime: ago(3, 5),
+          showingType: 'Open house',
+          buyerFeedback: 'Three groups attended; one serious couple asked about HOA rules and parking.',
+          followUp: 'Share seller FAQ',
+          offers: '1',
+          price: '$615K',
+          notes: 'Traffic was strongest in the first hour and the sign-in sheet looked promising.',
+          recommendation: 'Send a concise weekend recap and note that interest is still active.',
+        },
+        {
+          id: 'sample-willow-entry-2',
+          createdAt: ago(1, 2),
+          updatedAt: ago(1, 2),
+          updateType: 'Showing feedback',
+          showingDateTime: ago(1, 2),
+          showingType: 'Private showing',
+          buyerFeedback: 'Nice light in the kitchen, but they want to see the backyard one more time.',
+          followUp: 'Ask for second showing',
+          offers: '0',
+          price: '$615K',
+          notes: 'Buyer liked the layout and asked about closing flexibility.',
+          recommendation: 'Mention the upcoming open house and offer a second look if needed.',
+        },
+      );
+      saveStoredAgentEntries();
+      return true;
+    }
+
+    function ensureListingEntries(key) {
+      if (!agentEntriesByListing[key]) agentEntriesByListing[key] = [];
+      return agentEntriesByListing[key];
+    }
+
+    function toLocalInputValue(date = new Date()) {
+      const offsetMs = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - offsetMs).toISOString().slice(0, 16);
+    }
+
+    function formatDateTime(value) {
+      if (!value) return 'No date set';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function createEntryId() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      return `entry-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function readAgentFormValues() {
+      return {
+        updateType: agentUpdateType?.value || 'New showing',
+        showingDateTime: agentShowingDateTime?.value || toLocalInputValue(),
+        showingType: agentShowingType?.value || 'Private showing',
+        buyerFeedback: agentBuyerFeedback?.value || '',
+        followUp: agentFollowUp?.value || 'No follow-up needed',
+        offers: agentOffers?.value || '',
+        price: agentPrice?.value || '',
+        notes: agentNotes?.value || '',
+        recommendation: agentRecommendation?.value || '',
+      };
+    }
+
+    function resetAgentForm() {
+      if (agentUpdateType) agentUpdateType.value = 'New showing';
+      if (agentShowingDateTime) agentShowingDateTime.value = '';
+      if (agentShowingType) agentShowingType.value = 'Private showing';
+      if (agentBuyerFeedback) agentBuyerFeedback.value = '';
+      if (agentFollowUp) agentFollowUp.value = 'No follow-up needed';
+      if (agentOffers) agentOffers.value = '1';
+      if (agentPrice) agentPrice.value = '';
+      if (agentNotes) agentNotes.value = '';
+      if (agentRecommendation) agentRecommendation.value = '';
+    }
+
+    function updateAgentFormFromEntry(entry) {
+      if (!entry) return;
+      if (agentUpdateType) agentUpdateType.value = entry.updateType || 'New showing';
+      if (agentShowingDateTime) agentShowingDateTime.value = entry.showingDateTime || '';
+      if (agentShowingType) agentShowingType.value = entry.showingType || 'Private showing';
+      if (agentBuyerFeedback) agentBuyerFeedback.value = entry.buyerFeedback || '';
+      if (agentFollowUp) agentFollowUp.value = entry.followUp || 'No follow-up needed';
+      if (agentOffers) agentOffers.value = entry.offers || '';
+      if (agentPrice) agentPrice.value = entry.price || '';
+      if (agentNotes) agentNotes.value = entry.notes || '';
+      if (agentRecommendation) agentRecommendation.value = entry.recommendation || '';
+    }
+
+    function currentAgentEntries() {
+      return [...(agentEntriesByListing[currentListingKey] || [])].sort((a, b) => {
+        const aTime = new Date(a.createdAt || 0).getTime();
+        const bTime = new Date(b.createdAt || 0).getTime();
+        return bTime - aTime;
+      });
+    }
+
+    function buildEntryCard(entry) {
+      const summaryDate = formatDateTime(entry.showingDateTime || entry.createdAt);
+      const savedDate = formatDateTime(entry.createdAt);
+      const badges = [
+        entry.updateType || 'New showing',
+        entry.showingType || 'Private showing',
+        entry.followUp || 'No follow-up needed',
+      ];
+      return `
+        <details class="agent-entry-card" data-entry-id="${escapeHtml(entry.id)}" ${entry.id === agentEntryFocusId ? 'open' : ''}>
+          <summary>
+            <div class="agent-entry-summary">
+              <div class="agent-entry-summary-title">${escapeHtml(summaryDate)} · ${escapeHtml(entry.showingType || 'Private showing')}</div>
+              <div class="agent-entry-summary-subtitle">Saved ${escapeHtml(savedDate)} · ${escapeHtml(entry.buyerFeedback || 'No buyer feedback yet')}</div>
+            </div>
+            <div class="agent-entry-summary-badges">
+              ${badges.map((badge) => `<span class="badge gray">${escapeHtml(badge)}</span>`).join('')}
+            </div>
+          </summary>
+          <div class="agent-entry-body">
+            <div class="agent-entry-grid">
+              <div class="input-field input-span-2">
+                <label>Update type</label>
+                <select data-entry-field="updateType">
+                  <option ${entry.updateType === 'New showing' ? 'selected' : ''}>New showing</option>
+                  <option ${entry.updateType === 'Showing feedback' ? 'selected' : ''}>Showing feedback</option>
+                  <option ${entry.updateType === 'Offer update' ? 'selected' : ''}>Offer update</option>
+                  <option ${entry.updateType === 'Price strategy change' ? 'selected' : ''}>Price strategy change</option>
+                </select>
+              </div>
+              <div class="input-field">
+                <label>Showing date &amp; time</label>
+                <input data-entry-field="showingDateTime" type="datetime-local" value="${escapeHtml(entry.showingDateTime || '')}" />
+              </div>
+              <div class="input-field">
+                <label>Showing type</label>
+                <select data-entry-field="showingType">
+                  <option ${entry.showingType === 'Private showing' ? 'selected' : ''}>Private showing</option>
+                  <option ${entry.showingType === 'Open house' ? 'selected' : ''}>Open house</option>
+                  <option ${entry.showingType === 'Second showing' ? 'selected' : ''}>Second showing</option>
+                  <option ${entry.showingType === 'Broker tour' ? 'selected' : ''}>Broker tour</option>
+                </select>
+              </div>
+              <div class="input-field">
+                <label>Buyer feedback</label>
+                <input data-entry-field="buyerFeedback" type="text" value="${escapeHtml(entry.buyerFeedback || '')}" />
+              </div>
+              <div class="input-field">
+                <label>Follow-up needed?</label>
+                <select data-entry-field="followUp">
+                  <option ${entry.followUp === 'Send thank-you note' ? 'selected' : ''}>Send thank-you note</option>
+                  <option ${entry.followUp === 'Share seller FAQ' ? 'selected' : ''}>Share seller FAQ</option>
+                  <option ${entry.followUp === 'Ask for second showing' ? 'selected' : ''}>Ask for second showing</option>
+                  <option ${entry.followUp === 'No follow-up needed' ? 'selected' : ''}>No follow-up needed</option>
+                </select>
+              </div>
+              <div class="input-field">
+                <label>Offers / proposals</label>
+                <input data-entry-field="offers" type="number" value="${escapeHtml(entry.offers || '')}" />
+              </div>
+              <div class="input-field">
+                <label>List price</label>
+                <input data-entry-field="price" type="text" value="${escapeHtml(entry.price || '')}" />
+              </div>
+              <div class="input-field input-span-2">
+                <label>Agent notes for draft</label>
+                <textarea data-entry-field="notes">${escapeHtml(entry.notes || '')}</textarea>
+              </div>
+              <div class="input-field input-span-2">
+                <label>Recommended seller message</label>
+                <textarea data-entry-field="recommendation">${escapeHtml(entry.recommendation || '')}</textarea>
+              </div>
+            </div>
+            <div class="agent-entry-actions">
+              <button class="primary-btn" type="button" data-action="save-entry">Save changes</button>
+              <button class="secondary-btn" type="button" data-action="load-entry">Load into main form</button>
+              <button class="secondary-btn" type="button" data-action="delete-entry">Delete</button>
+            </div>
+          </div>
+        </details>
+      `;
+    }
+
+    function renderAgentEntries() {
+      if (!agentEntryList) return;
+      const entries = currentAgentEntries();
+      if (!entries.length) {
+        agentEntryList.innerHTML = '<div class="help">No saved showing entries yet. Add the first one above and it will appear here.</div>';
+        return;
+      }
+      agentEntryList.innerHTML = entries.map(buildEntryCard).join('');
+    }
+
+    function addShowingEntry() {
+      const entries = ensureListingEntries(currentListingKey);
+      const now = new Date().toISOString();
+      const entry = {
+        id: createEntryId(),
+        createdAt: now,
+        updatedAt: now,
+        ...readAgentFormValues(),
+      };
+      entries.unshift(entry);
+      saveStoredAgentEntries();
+      renderAgentEntries();
+      resetAgentForm();
+      if (agentShowingDateTime) agentShowingDateTime.value = toLocalInputValue();
+    }
+
+    function readEntryFromCard(card) {
+      const getValue = (field) => card.querySelector(`[data-entry-field="${field}"]`)?.value || '';
+      return {
+        updateType: getValue('updateType') || 'New showing',
+        showingDateTime: getValue('showingDateTime') || '',
+        showingType: getValue('showingType') || 'Private showing',
+        buyerFeedback: getValue('buyerFeedback'),
+        followUp: getValue('followUp') || 'No follow-up needed',
+        offers: getValue('offers'),
+        price: getValue('price'),
+        notes: getValue('notes'),
+        recommendation: getValue('recommendation'),
+      };
+    }
+
+    function updateEntryFromCard(card) {
+      const entryId = card.dataset.entryId;
+      const entries = ensureListingEntries(currentListingKey);
+      const index = entries.findIndex((item) => item.id === entryId);
+      if (index === -1) return;
+      entries[index] = {
+        ...entries[index],
+        ...readEntryFromCard(card),
+        updatedAt: new Date().toISOString(),
+      };
+      saveStoredAgentEntries();
+      renderAgentEntries();
+    }
+
+    function deleteEntryFromCard(card) {
+      const entryId = card.dataset.entryId;
+      const entries = ensureListingEntries(currentListingKey);
+      agentEntriesByListing[currentListingKey] = entries.filter((item) => item.id !== entryId);
+      if (agentEntryFocusId === entryId) agentEntryFocusId = null;
+      saveStoredAgentEntries();
+      renderAgentEntries();
+    }
+
+    function loadEntryIntoMainForm(card) {
+      const entry = readEntryFromCard(card);
+      updateAgentFormFromEntry(entry);
+      if (entry.showingDateTime && agentShowingDateTime) {
+        agentShowingDateTime.value = entry.showingDateTime;
+      }
+      showView('agentInput');
+    }
+
+    function generateSellerDraft() {
+      const entries = currentAgentEntries();
+      const latest = entries[0];
+      if (latest) {
+        const notes = [
+          `Latest entry: ${latest.showingType || 'Private showing'} on ${formatDateTime(latest.showingDateTime || latest.createdAt)}.`,
+          latest.buyerFeedback ? `Buyer feedback: ${latest.buyerFeedback}.` : '',
+          latest.followUp ? `Follow-up: ${latest.followUp}.` : '',
+          latest.offers ? `Offers / proposals: ${latest.offers}.` : '',
+          latest.price ? `List price: ${latest.price}.` : '',
+        ].filter(Boolean).join(' ');
+        if (agentNotes) agentNotes.value = notes;
+        if (agentRecommendation) {
+          agentRecommendation.value = latest.recommendation || 'Write a short seller update using the latest showing activity and any follow-up needed.';
+        }
+      }
+      showView('agentInput');
+    }
+
+    function handleAgentEntryAction(event) {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+      const card = button.closest('.agent-entry-card');
+      if (!card) return;
+      const action = button.dataset.action;
+      if (action === 'save-entry') updateEntryFromCard(card);
+      if (action === 'delete-entry') deleteEntryFromCard(card);
+      if (action === 'load-entry') loadEntryIntoMainForm(card);
+    }
 
     function showView(name) {
       Object.entries(views).forEach(([key, el]) => {
@@ -2518,6 +3101,19 @@
     listingButtons.forEach(btn => {
       btn.addEventListener('click', () => renderListing(btn.dataset.listing));
     });
+
+    if (agentEntryList) {
+      agentEntryList.addEventListener('click', handleAgentEntryAction);
+    }
+    if (addShowingEntryBtn) {
+      addShowingEntryBtn.addEventListener('click', addShowingEntry);
+    }
+    if (generateDraftBtn) {
+      generateDraftBtn.addEventListener('click', generateSellerDraft);
+    }
+    if (agentShowingDateTime && !agentShowingDateTime.value) {
+      agentShowingDateTime.value = toLocalInputValue();
+    }
 
     renderListing('willow');
   </script>
